@@ -135,7 +135,6 @@ const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
   }, [user, error]); */
 
   return {
-    user,  
     register,
     login,
     forgotPassword,

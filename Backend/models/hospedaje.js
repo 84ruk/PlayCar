@@ -42,7 +42,6 @@ const HospedajeSchema = Schema({
     imagenes: [{
         type: String,
         required: false,
-        default: "no-image.jpg"
     }],
     fechasReservadas: [{
         type: Schema.Types.ObjectId,

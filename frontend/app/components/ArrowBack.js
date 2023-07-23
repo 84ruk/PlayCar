@@ -14,11 +14,10 @@ export default function BackButton({ lastRoute }) {
   };
 
   return (
-    <div className="flex items-center mb-5">
+    <div className="flex items-center align-middle">
       <Link href={ lastRoute } onClick={handleGoBack} className="mr-2">
-        <Image src={ArrowBackIcon} alt="Arrow Back" width={25} height={25} />
+        <Image src={ArrowBackIcon} alt="Arrow Back" width={30} height={30} />
       </Link>
-      <p>Regresar</p>
     </div>
   );
 };

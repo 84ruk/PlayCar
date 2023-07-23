@@ -13,9 +13,8 @@ export default async function Home() {
 
 
   return( 
-    <div className="min-width-container flex flex-col  w-11/12 max-w-7xl min-w-xl bg-white rounded-lg shadow-lg mt-5 p-10 sticky top-10 ">
+    <>
       
-    <Header />
       <div className="flex flex-col justify-center items-center lg:flex-row">
         <div className="w-full lg:w-1/2 px-10 space-y-8">
           <h1 className="text-black  text-4xl font-bold leading-10 tracking-tight">
@@ -32,8 +31,8 @@ export default async function Home() {
                 <Link href="/contacto" className="px-5 py-3 rounded-sm bg-white text-black font-bold text-base transition-colors duration-300 hover:shadow-md mx-2">
                   <span  >
                     Renta hospedaje o paquetes turisticos 
+                    <Image src={Flecha } alt='Flecha'/>
                   </span>
-                  <Image src={Flecha } alt='Flecha'/>
                 </Link>
               </div>
 
@@ -50,7 +49,7 @@ export default async function Home() {
         <Paquetes />
 
 
-    </div>
+    </>
 
     
   );

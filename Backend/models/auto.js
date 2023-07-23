@@ -30,8 +30,7 @@ const AutoSchema = Schema({
     },
     imagen: {
         type: String,
-        required: false,
-        default: "no-image.jpg"
+        required: false, //Cambiar a imagenes y hacer array
     },
     fechasReservadas: [{
         type: Schema.Types.ObjectId,

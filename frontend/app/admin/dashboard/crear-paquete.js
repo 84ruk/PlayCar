@@ -40,7 +40,7 @@ function CrearPaquete() {
     const obtenerHospedajes = async () => {
       try {
         const response = await axios.get('http://localhost:8080/api/hospedajes');
-        setHospedajes(response.data.hospedajes);
+        setHospedajes(response.data.hospedajes);A
       } catch (error) {
         setErrorMessages(error.response);
       }

@@ -1,3 +1,4 @@
+import Header from './components/Header';
 import { AppProvider } from './context/appContextProvider'
 import './globals.css'
 import { Inter } from 'next/font/google'
@@ -23,9 +24,15 @@ export default function RootLayout({ children }) {
         <meta name="description" content={metadata.description} />
         {/* Agrega aquí más etiquetas meta relevantes para el SEO */}
       </Head>
-      <body className={`bg-gray-100 w-full h-screen flex justify-center items-center ${inter.className}`}>
+      <body className={`bg-gray-100 w-full justify-center items-center ${inter.className} min-width-container flex flex-col w-11/12 min-w-xl mt-5`}>
       <AppProvider >
+        
+        <div className='min-width-container flex flex-col  w-11/12 max-w-7xl min-w-xl bg-white rounded-lg shadow-lg mt-5 p-10 sticky top-10 '>
+
+              <Header />
               {children}
+
+        </div>
 
         </AppProvider>
       </body>

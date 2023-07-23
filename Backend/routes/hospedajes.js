@@ -23,10 +23,7 @@ router.post('/', [
 
 router.get('/', obtenerHospedajes );
 
-router.get('/:id',[
-    validarJWT,
-    validarCampos
-], obtenerHospedaje);
+router.get('/:id', obtenerHospedaje);
 
 router.put('/:id',[
     validarJWT,
