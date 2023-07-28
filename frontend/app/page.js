@@ -16,7 +16,7 @@ export default async function Home() {
     <>
       
       <div className="flex flex-col justify-center items-center lg:flex-row">
-        <div className="w-full lg:w-1/2 px-10 space-y-8">
+        <div className="w-full lg:w-1/2 px-7 space-y-8">
           <h1 className="text-black  text-4xl font-bold leading-10 tracking-tight">
             Renta de autos y traslados en la Riviera Maya
           </h1>
@@ -25,18 +25,17 @@ export default async function Home() {
             <div className="flex justify-center w-auto space-x-4">
                 <Link
                   href="/renta-hospedajes"
-                  className="px-3 py-3 rounded-md bg-orange-500 text-white font-bold text-base shadow-md hover:bg-orange-400 transition-colors duration-300 hover:shadow-none flex items-center "
+                  className="px-2 py-2 rounded-md bg-orange-500 text-white font-bold shadow-md hover:bg-orange-400 transition-colors duration-300 hover:shadow-none flex items-center "
                 >
                   <span>Hacer una reservación</span>
                 </Link>
 
                 <Link
                   href="/contacto"
-                  className="px-5 py-3 rounded-md bg-white text-black font-bold text-lg shadow-md hover:shadow-lg transition-shadow flex items-center justify-center space-x-2"
+                  className="px-2 py-2 rounded-md bg-white text-black font-bold text-lg shadow-md hover:shadow-lg transition-shadow flex items-center justify-center space-x-2"
                 >
                   <span>
                     Renta hospedaje o paquetes turísticos
-                    <span className="text-xs text-green-500 mb-1">by Kaxtik</span>
                   </span>
                   <Image src={Flecha} alt="Flecha" className="w-5 h-5" />
                 </Link>

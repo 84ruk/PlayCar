@@ -9,7 +9,11 @@ import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 
 const Header = () => {
+
   const { data: session } = useSession();
+  
+  
+  
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const isLinkSelected = (actualPathname) => {
@@ -21,44 +25,42 @@ const Header = () => {
   };
 
   return (
-    <header className="px-4 py-2 bg-white sticky ">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <Image src={Logo} alt="logo" width={"auto"} height={"auto"} />
+    <header className="bg-white sticky top-0 z-10 w-full">
+      <div className="container mx-auto px-4 pb-3 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold text-gray-800">Play Car</h1>
         </div>
         <div className="hidden lg:flex items-center space-x-4">
           <Link href="/">
-            <span className={`cursor-pointer ${isLinkSelected('/')} hover:text-orange-500`}>Inicio</span>
+            <span className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/')}`}>Inicio</span>
           </Link>
-          <div className="ml-auto">
-            <Link href="/catalogo">
-              <span className={`cursor-pointer ${isLinkSelected('/catalogo')} hover:text-orange-500`}>Catálogo</span>
-            </Link>
-          </div>
+          <Link href="/catalogo">
+            <span className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/catalogo')}`}>Catálogo</span>
+          </Link>
           <Link href="/contacto">
-            <span className={`cursor-pointer ${isLinkSelected('/contacto')} hover:text-orange-500`}>Contacto</span>
+            <span className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/contacto')}`}>Contacto</span>
           </Link>
           <Link href="/profile">
             <span className="cursor-pointer">
-              <Image src={Profile} alt="profile" width={25} height={25} className="rounded-full" />
+              <Image src={Profile} alt="profile" width={35} height={35} className="rounded-full" />
             </span>
           </Link>
           <Link href="/shopping-cart">
             <span className="cursor-pointer">
-              <Image src={Cart} alt="carrito" width={25} height={25} />
+              <Image src={Cart} alt="carrito" width={30} height={30} />
             </span>
           </Link>
-          {session?.user?.rol === 'ADMIN_ROLE' && ( // Validación del rol de administrador
+          {session?.user?.rol === 'ADMIN_ROLE' && (
             <Link href="/admin/dashboard">
-              <span className={`cursor-pointer ${isLinkSelected('/admin/dashboard')} hover:text-orange-500`}>Dashboard</span>
+              <span className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/admin/dashboard')}`}>Dashboard</span>
             </Link>
           )}
         </div>
-        <div className={`flex items-center space-x-4 lg:hidden`} onClick={toggleMenu}>
-          <span className="inline-block ">
+        <div className="flex items-center lg:hidden">
+          <span className="inline-block" onClick={toggleMenu}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-nextjs13 hover:text-orange-500 hover:cursor-pointer transition-colors duration-300"
+              className="h-6 w-6 text-gray-600 hover:text-orange-500 cursor-pointer transition-colors duration-300"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -73,36 +75,36 @@ const Header = () => {
         </div>
       </div>
       {isOpen && (
-        <div className="w-full bg-white shadow-md top-full left-0 py-2 px-4">
-          <div className="flex flex-col space-y-2 items-center">
+        <div className="lg:hidden bg-white py-2">
+          <div className="container mx-auto px-4 flex flex-col space-y-4">
             <Link href="/">
-              <span className={`block ${isLinkSelected('/')} hover:text-orange-500`} onClick={toggleMenu}>
+              <span className={`block font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/')}`} onClick={toggleMenu}>
                 Inicio
               </span>
             </Link>
             <Link href="/catalogo">
-              <span className={`block ${isLinkSelected('/catalogo')} hover:text-orange-500`} onClick={toggleMenu}>
+              <span className={`block font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/catalogo')}`} onClick={toggleMenu}>
                 Catálogo
               </span>
             </Link>
             <Link href="/contacto">
-              <span className={`block ${isLinkSelected('/contacto')} hover:text-orange-500`} onClick={toggleMenu}>
+              <span className={`block font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/contacto')}`} onClick={toggleMenu}>
                 Contacto
               </span>
             </Link>
             <Link href="/profile">
-              <span className="block cursor-pointer">
+              <span className="block cursor-pointer" onClick={toggleMenu}>
                 <Image src={Profile} alt="profile" width={35} height={35} className="rounded-full" />
               </span>
             </Link>
             <Link href="/shopping-cart">
-              <span className="block cursor-pointer">
-                <Image src={Cart} alt="carrito" width={35} height={35} />
+              <span className="block cursor-pointer" onClick={toggleMenu}>
+                <Image src={Cart} alt="carrito" width={30} height={30} />
               </span>
             </Link>
-            {session?.user?.rol === 'ADMIN_ROLE' && ( // Validación del rol de administrador
+            {session?.user?.rol === 'ADMIN_ROLE' && (
               <Link href="/admin/dashboard">
-                <span className={`block ${isLinkSelected('/admin/dashboard')} hover:text-orange-500`} onClick={toggleMenu}>
+                <span className={`block font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/admin/dashboard')}`} onClick={toggleMenu}>
                   Dashboard
                 </span>
               </Link>

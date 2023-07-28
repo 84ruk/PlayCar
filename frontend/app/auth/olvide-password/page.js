@@ -50,7 +50,7 @@ export default function ForgotPassword() {
       {loading && <LoadingSpinner />}
       <div className="flex items-center justify-center h-full">
         <div className="w-full max-w-md">
-          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <h2 className="text-2xl font-bold mb-6 text-center">Olvidé mi contraseña</h2>
             {errorMessages?.length > 0 && <Error messages={errorMessages} />}
             {successMessages?.map((message, index) => (

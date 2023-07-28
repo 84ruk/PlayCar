@@ -28,8 +28,8 @@ export default function RootLayout({ children }) {
       <AppProvider >
         
         <div className='min-width-container flex flex-col  w-11/12 max-w-7xl min-w-xl bg-white rounded-lg shadow-lg mt-5 p-10 sticky top-10 '>
-
               <Header />
+
               {children}
 
         </div>

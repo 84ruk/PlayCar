@@ -60,7 +60,6 @@ const login = async (req, res) => {
     return res.json({
       msg: "Login",
       usuario,
-      token, //borrar
     });
   } catch (error) {
     console.log(error);
@@ -69,6 +68,7 @@ const login = async (req, res) => {
     });
   }
 };
+
 
 
 const logout = async (req, res = response) => {

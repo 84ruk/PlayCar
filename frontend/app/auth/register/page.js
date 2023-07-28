@@ -25,6 +25,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
+
     // Verificar si los campos están vacíos
     if (!nombre || !correo || !password || !confirmarPassword) {
       setErrorMessages('Todos los campos son obligatorios');
@@ -54,12 +55,12 @@ const Register = () => {
   useEffect(() => {
     setSuccessMessages([]);
     setErrorMessages([]);
-  }, [])
+  }, []);
   
   return (
     <>
       {loading && <LoadingSpinner />}
-      <div className="min-width-container flex flex-col w-9/12 max-w-4xl min-w-xl bg-white rounded-lg shadow-lg p-10 mt-5">
+
         <BackButton  lastRoute={'/auth/login'}/>
 
         <h1 className="text-5xl center font-bold">Registro</h1>
@@ -108,7 +109,6 @@ const Register = () => {
             </button>
           </div>
         </form>
-      </div>
     </>
   );
 };

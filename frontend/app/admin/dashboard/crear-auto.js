@@ -13,7 +13,7 @@ function CrearAuto() {
   const { loading, setLoading, setErrorMessages, errorMessages, successMessages, setSuccessMessages } = useAppContext();
   const { data: session } = useSession();
   const token = session?.user.jwt;
-  
+  console.log(session);
   const initialValues = {
     nombre: '',
     marca: '',

@@ -9,6 +9,7 @@ import BackButton from '../../components/ArrowBack';
 import Link from 'next/link';
 
 const Login = () => {
+  
   const router = useRouter();
   const { loading, setLoading, setErrorMessages, errorMessages, setSuccessMessages} = useAppContext();
 
@@ -62,7 +63,7 @@ const Login = () => {
   return (
     <>
       {loading ? <LoadingSpinner /> : null}
-      <div className="min-width-container flex flex-col w-9/12 max-w-4xl min-w-xl bg-white rounded-lg shadow-lg p-10">
+
         <BackButton lastRoute={'/'} />
         <h1 className="text-5xl center font-bold">Inicia sesion</h1>
         { errorMessages.length > 0 && <Error messages={errorMessages} /> }
@@ -95,7 +96,6 @@ const Login = () => {
             </button>
           </div>
         </form>
-      </div>
     </>
   );
 };

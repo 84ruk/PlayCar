@@ -1,38 +1,89 @@
+import { getToken } from 'next-auth/jwt';
+import { getSession, useSession } from 'next-auth/react';
 import { NextResponse } from 'next/server'
 const jose = require('jose');
 const { convertVariableToUint8Array } = require('./helpers/convertVariableToUint8Array');
-const useAuth = require('./hooks/auth');
-
-export default async function middleware(request) {
-  /* const { user } = nextauth()*/
+import jwt from "jsonwebtoken";
 
 
+export async function middleware(req) {
 
+  const session = await getToken({ req, secret: process.env.JWT_SECRET});
+  console.log('session', session);
+  
+  /* if(!session){
 
-  console.log('holas')
-  const token = request.cookies.get('bearer token');
+    const requestedPage = req.nextUrl.pathname;
+    const url = req.nextUrl.clone();
+    url.pathname = `/auth/login`;
+    url.search = `?p=${requestedPage}`;
+
+    return NextResponse.redirect( url );
+  }
+
   try {
-    const secret = process.env.JWT_SECRET;
-    const uint8Array = convertVariableToUint8Array(secret);
-    const decodedToken = jose.decodeJwt(token.value);
+    // Validar el nonce del token JWT
+    const decodedToken = jwt.verify(session.jwt, process.env.JWT_SECRET, {
+      maxAge: 100 * 60 * 60 * 24 * 30, // Tiempo de validez del token (ajusta según tus necesidades)
+    });
 
-    if (!decodedToken) {
-      // Redirect the user to the login page
-      return NextResponse.redirect(new URL('/auth/login', request.url));
-    }
+    // Obtener el Nonce almacenado en el token
+    const nonce = decodedToken.nonce;
 
-    // Rest of the token validation logic
+    // Si el token es válido y el Nonce coincide, puedes continuar con el flujo normal
 
     return NextResponse.next();
   } catch (error) {
-    console.log(error);
-    return NextResponse.rewrite(new URL('/auth/login', request.url));
-  }
+    // Si el token no es válido o el Nonce no coincide, redirige al usuario a la página de inicio de sesión
+    console.log(error)
+    return NextResponse.next();
+    return NextResponse.redirect('/auth/login');
+  } */
+
 }
+ 
+/* 
+
+
+
+  try {
+    /*  const decodedToken = jwt.verify(session, process.env.JWT_SECRET, {
+      maxAge: 100 * 60 * 60 * 24 * 30, // Tiempo de validez del token (ajusta según tus necesidades)
+    });  */
+
+    // Obtener el Nonce almacenado en el token
+    /* const nonce = decodedToken.nonce; 
+
+    // Si el token es válido y el Nonce coincide, puedes continuar con el flujo normal
+
+    return NextResponse.next();
+  } catch (error) {
+    // Si el token no es válido o el Nonce no coincide, redirige al usuario a la página de inicio de sesión
+    console.log(error)
+    return NextResponse.next();
+  }
+  if(session){
+    const requestedPage = req.nextUrl.pathname;
+
+    if(requestedPage.startsWith('/auth/')){
+      const url = req.nextUrl.clone();
+      url.pathname = `/`;
+      url.search = `?p=${requestedPage}`;
+      return NextResponse.redirect(url);
+    }
+    if (requestedPage.startsWith('/auth/') || requestedPage.startsWith('/admin/')) {
+      const url = req.nextUrl.clone();
+      url.pathname = `/auth/login`;
+      url.search = `?p=${requestedPage}`;
+      return NextResponse.redirect(url);
+    }
+
+  } */
+  
 
 export const config = {
   matcher:[ 
-    '/details' /* '/auth/login', '/auth/register' */],
+    '/pagar/:path*', '/admin/:path*', '/' /* '/auth/login', '/auth/register' */],
   skipMiddlewareUrlNormalize: [
     '/auth/login',
     '/auth/register',
@@ -208,3 +259,27 @@ export default async function middleware(request) {
   // Continue with the rest of the request
   return NextResponse.next();
 }; */
+
+  /* const { user } = nextauth()*/
+
+
+
+
+/*   const token = request.cookies.get('bearer token');
+  try {
+    const secret = process.env.JWT_SECRET;
+    const uint8Array = convertVariableToUint8Array(secret);
+    const decodedToken = jose.decodeJwt(token.value);
+
+    if (!decodedToken) {
+      // Redirect the user to the login page
+      return NextResponse.redirect(new URL('/auth/login', request.url));
+    }
+
+    // Rest of the token validation logic
+
+    return NextResponse.next();
+  } catch (error) {
+    console.log(error);
+    return NextResponse.rewrite(new URL('/auth/login', request.url));
+  } */

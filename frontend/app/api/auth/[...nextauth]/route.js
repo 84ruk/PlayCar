@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
 
-
 const options = {
   providers: [
     CredentialsProvider({
@@ -24,16 +23,18 @@ const options = {
           });
 
           if (response.ok) {
-            const { usuario, token } = await response.json();
-      
+            const { usuario } = await response.json();
+            
+
             // Aquí construyes el objeto de usuario con los datos necesarios
             const user = {
               nombre: usuario.nombre,
               email: usuario.correo,
               rol: usuario.rol,
               uid: usuario.uid,
-              jwt: token
             };
+            
+            
             // Aquí retornas tanto el objeto de usuario como el token
             return Promise.resolve( user );
 
@@ -59,25 +60,48 @@ const options = {
   },
   session: {
     strategy: 'jwt',
+    jwt: true
   },
   callbacks: {
     async jwt({ token, user, }) {
+
       if(user){ 
         token.user = user;
-        user.jwt = token.user.jwt;
       }
-
+      console.log('token', token);
+      console.log('user', user);
       return token;
       
       /* if( user ) user. = user; */ //no se por que
     },
-    async session({ session, token, user }) {
-      
-      if(token){ 
-        session.user = token.user; 
+    async session({ session, token }) {
+
+      if (!token || !token.payload || !token.user) {
+        // Si no hay token o el usuario no está autenticado, redirigir a página de inicio de sesión
+        return null;
       }
-      
-      return session
+
+      const { uid, nonce } = token.payload;
+
+      // Verificar el nonce aquí, por ejemplo, comparándolo con el valor almacenado en el backend
+      const validNonce = await verificarNonce(uid, nonce);
+
+      if (!validNonce) {
+        // Si el nonce no es válido, puedes considerar la sesión como no válida y devolver null
+        return null;
+      }
+
+
+        session.user = {
+          nombre: token.user.nombre,
+          email: token.user.email,
+          rol: token.user.rol,
+          uid: token.user.uid,
+        };
+      }
+
+      return session;
+
     },
     signout: async (req, res) => {
       //Implementar logica para eliminar el token
