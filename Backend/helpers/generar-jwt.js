@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const { v4: uuidv4 } = require("uuid");
 
 
 const generarJWT = ( uid ) => {
@@ -8,10 +7,9 @@ const generarJWT = ( uid ) => {
   return new Promise((resolve, reject) => {
     const payload = { uid };
 
-    const nonce = uuidv4();
 
     jwt.sign(
-      {payload, nonce},
+      {payload},
       process.env.JWT_SECRET,
       {
         expiresIn: "12h",

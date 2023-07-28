@@ -60,7 +60,6 @@ const options = {
   },
   session: {
     strategy: 'jwt',
-    jwt: true
   },
   callbacks: {
     async jwt({ token, user, }) {
@@ -68,36 +67,16 @@ const options = {
       if(user){ 
         token.user = user;
       }
-      console.log('token', token);
-      console.log('user', user);
+
+      console.log(token);
       return token;
       
       /* if( user ) user. = user; */ //no se por que
     },
-    async session({ session, token }) {
+    async session({ session, token, user }) {
 
-      if (!token || !token.payload || !token.user) {
-        // Si no hay token o el usuario no está autenticado, redirigir a página de inicio de sesión
-        return null;
-      }
-
-      const { uid, nonce } = token.payload;
-
-      // Verificar el nonce aquí, por ejemplo, comparándolo con el valor almacenado en el backend
-      const validNonce = await verificarNonce(uid, nonce);
-
-      if (!validNonce) {
-        // Si el nonce no es válido, puedes considerar la sesión como no válida y devolver null
-        return null;
-      }
-
-
-        session.user = {
-          nombre: token.user.nombre,
-          email: token.user.email,
-          rol: token.user.rol,
-          uid: token.user.uid,
-        };
+      if(token){ 
+        session.user = token.user; 
       }
 
       return session;

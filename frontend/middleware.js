@@ -11,6 +11,7 @@ export async function middleware(req) {
   const session = await getToken({ req, secret: process.env.JWT_SECRET});
   console.log('session', session);
   
+
   /* if(!session){
 
     const requestedPage = req.nextUrl.pathname;
@@ -39,6 +40,7 @@ export async function middleware(req) {
     return NextResponse.next();
     return NextResponse.redirect('/auth/login');
   } */
+  
 
 }
  

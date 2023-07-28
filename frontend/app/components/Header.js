@@ -13,7 +13,6 @@ const Header = () => {
   const { data: session } = useSession();
   
   
-  
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const isLinkSelected = (actualPathname) => {
