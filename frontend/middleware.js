@@ -4,7 +4,7 @@ const { convertVariableToUint8Array } = require('./helpers/convertVariableToUint
 const useAuth = require('./hooks/auth');
 
 export default async function middleware(request) {
-  /* const { user } = useAuth()*/
+  /* const { user } = nextauth()*/
 
 
 

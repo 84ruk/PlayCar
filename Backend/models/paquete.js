@@ -38,10 +38,7 @@ const PaqueteSchema = Schema({
           ref: 'Hospedaje'
         }
       ],
-      hospedajeReservado: {
-        type: Schema.Types.ObjectId,
-        ref: 'Hospedaje'
-      }
+
 })
 
 module.exports = model("Paquete", PaqueteSchema);

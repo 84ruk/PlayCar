@@ -5,6 +5,8 @@ const Paquete = require("../models/paquete");
 const Auto = require("../models/auto"); 
 const Hospedaje = require("../models/hospedaje");
 const { uploadFile, getFiles } = require("../s3");
+const hospedaje = require("../models/hospedaje");
+const FechaReservada = require("../models/fecha-reservada");
 
 
 const crearPaquete = async (req, res) => {
@@ -17,13 +19,11 @@ const crearPaquete = async (req, res) => {
 
 
     const existePaquete = await Paquete.findOne({ nombre });
-  // Subir los archivos a S3
 
-
-  // Resto del código...
-/*   const paquete = new Paquete({
-    imagenes: uploadedFiles.map((uploadedFile) => uploadedFile.Key),
-  }); */
+    
+    if(!nombre || !descripcion || !precio){
+      return res.status(400).json({ message: 'Faltan datos' });
+    }
 
     if (existePaquete) {
       return res.status(400).json({ message: 'El paquete ya existe' });
@@ -136,12 +136,97 @@ const obtenerPaquete = async (req, res = response) => {
     });
     const hospedajes = await Promise.all(hospedajeDetailsPromises);
 
-    // Add auto and hospedaje details to the paquete object
+    
     paquete.autos = autos;
     paquete.hospedajes = hospedajes;
 
+
+    const fechasReservadasIdsHospedajes = hospedajes.map((hospedaje) => {
+      return hospedaje?.fechasReservadas?.map((fechaReservada) => fechaReservada._id) ?? [];
+    }).flat();
+    
+    
+    
+    
+    
+    const fechasReservadasCompletas = await FechaReservada.find({ _id: { $in: fechasReservadasIdsHospedajes } });
+
+    // Formatear las fechas completas
+    const fechasFormateadasHospedajes = fechasReservadasCompletas.map((fechaReservada) => {
+      return {
+        fechaInicio: fechaReservada.fechaInicio.toISOString(),
+        fechaFin: fechaReservada.fechaFin.toISOString(),
+      };
+    });
+
+    
+    const fechasReservadasIdsAutos = autos.map((auto) => {
+      return auto?.fechasReservadas?.map((fechaReservada) => fechaReservada._id) ?? [];
+    }).flat();
+
+    const fechasReservadasAutosCompletas = await FechaReservada.find({ _id: { $in: fechasReservadasIdsAutos } });
+    
+    const fechasFormateadasAutos = fechasReservadasAutosCompletas.map((fechaReservada) => {
+      return {
+        fechaInicio: fechaReservada.fechaInicio.toISOString(),
+        fechaFin: fechaReservada.fechaFin.toISOString(),
+      };
+    });
+
+    
+
+
+    const obtenerRangosFechas = (fechasFormateadasAutos, fechasFormateadasHospedajes) => {
+      const fechasCombinadas = [...fechasFormateadasAutos, ...fechasFormateadasHospedajes].sort(
+        (a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio)
+      );
+    
+      const rangosFechas = [];
+      let fechaInicio = null;
+      let fechaFin = null;
+    
+      for (const fecha of fechasCombinadas) {
+        const fechaInicioActual = new Date(fecha.fechaInicio);
+        const fechaFinActual = new Date(fecha.fechaFin);
+    
+        if (!fechaInicio) {
+          fechaInicio = fechaInicioActual;
+          fechaFin = fechaFinActual;
+        } else {
+          const siguienteFecha = new Date(fechaInicio);
+          siguienteFecha.setDate(siguienteFecha.getDate() + 1);
+    
+          if (siguienteFecha.getTime() === fechaInicioActual.getTime()) {
+            fechaFin = fechaFinActual;
+          } else {
+            rangosFechas.push({
+              fechaInicio: fechaInicio.toISOString(),
+              fechaFin: fechaFin.toISOString(),
+            });
+            fechaInicio = fechaInicioActual;
+            fechaFin = fechaFinActual;
+          }
+        }
+      }
+    
+      // Agregar el último rango de fechas
+      if (fechaInicio && fechaFin) {
+        rangosFechas.push({
+          fechaInicio: fechaInicio.toISOString(),
+          fechaFin: fechaFin.toISOString(),
+        });
+      }
+    
+      return rangosFechas;
+    };
+
+      const fechasFormateadas = obtenerRangosFechas(fechasFormateadasAutos, fechasFormateadasHospedajes);
+
+
     res.json({
       paquete,
+      fechasFormateadas
+
     });
   } catch (error) {
     console.log(error);

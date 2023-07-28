@@ -22,19 +22,27 @@ export default async function Home() {
           </h1>
           <div className="flex flex-col justify-between space-y-10  md:justify-between md:flex-row md:space-y-0 ">
             {/* Wrap the buttons on smaller screens */}
-             <div className="flex justify-center w-auto ">
-                <Link href="/renta-hospedajes" className="px-5 py-3 rounded-sm bg-orange-500 text-white font-bold text-base shadow-md hover:bg-orange-400 transition-colors duration-300 hover:shadow-none my-auto mx-2">
-                    Hacer una reservacion
+            <div className="flex justify-center w-auto space-x-4">
+                <Link
+                  href="/renta-hospedajes"
+                  className="px-3 py-3 rounded-md bg-orange-500 text-white font-bold text-base shadow-md hover:bg-orange-400 transition-colors duration-300 hover:shadow-none flex items-center "
+                >
+                  <span>Hacer una reservación</span>
                 </Link>
-              </div>
-              <div className="flex justify-center w-auto">
-                <Link href="/contacto" className="px-5 py-3 rounded-sm bg-white text-black font-bold text-base transition-colors duration-300 hover:shadow-md mx-2">
-                  <span  >
-                    Renta hospedaje o paquetes turisticos 
-                    <Image src={Flecha } alt='Flecha'/>
+
+                <Link
+                  href="/contacto"
+                  className="px-5 py-3 rounded-md bg-white text-black font-bold text-lg shadow-md hover:shadow-lg transition-shadow flex items-center justify-center space-x-2"
+                >
+                  <span>
+                    Renta hospedaje o paquetes turísticos
+                    <span className="text-xs text-green-500 mb-1">by Kaxtik</span>
                   </span>
+                  <Image src={Flecha} alt="Flecha" className="w-5 h-5" />
                 </Link>
-              </div>
+            </div>
+
+
 
 
           </div>

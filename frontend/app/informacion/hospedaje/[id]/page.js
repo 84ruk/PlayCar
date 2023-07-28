@@ -2,18 +2,23 @@ import BackButton from '@/app/components/ArrowBack';
 import Header from '@/app/components/Header';
 import axios from 'axios';
 import Image from 'next/image';
-import BotonReserva from '../../botonreserva';
+import BotonReserva from './botonreserva';
 
 async function getDetalleHospedaje(id){
     const { data } = await axios.get(`http://localhost:8080/api/hospedajes/${id}`); //cache nostore
-    const paquete = data.hospedaje;
-  return paquete;
+    const response = data;
+  return response;
 }
 
 export default async function DetalleHospedaje ({
     params: { id },
 }){
-    const hospedaje = await getDetalleHospedaje(id);
+  
+
+    const { hospedaje, fechasFormateadas} = await getDetalleHospedaje(id);
+    
+    
+    // Ahora 'fechasFormateadas' contiene las fechas en formato legible para el frontend
     return (
       <div className="container mx-auto mt-10">
         <div className="bg-white rounded-lg shadow-md p-6">
@@ -40,9 +45,7 @@ export default async function DetalleHospedaje ({
                   {hospedaje.estado ? 'Disponible' : 'No disponible'}
                 </p>
                 <p className="text-gray-700 font-bold mb-2">Precio: ${hospedaje.precio}</p>
-                <p className="text-gray-600 mb-2">Fechas reservadas: {hospedaje.fechasReservadas.join(', ')}</p>
-                {/* Agregamos el botón "Ver Detalles de Hospedaje" */}
-                < BotonReserva />
+                < BotonReserva fechasFormateadas={ fechasFormateadas } id={ id } />
               </div>
             </div>
           </div>

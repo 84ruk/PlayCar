@@ -9,48 +9,28 @@ import Error from '@/app/components/Error';
 import LoadingSpinner from '@/app/components/Loader';
 import Success from '@/app/components/Success';
 
-function CrearPaquete() {
+function CrearAuto() {
   const { loading, setLoading, setErrorMessages, errorMessages, successMessages, setSuccessMessages } = useAppContext();
   const { data: session } = useSession();
   const token = session?.user.jwt;
   
   const initialValues = {
     nombre: '',
+    marca: '',
+    modelo: 0,
     descripcion: '',
-    precio: '',
-    autos: [],
-    hospedajes: [],
+    categoria: '',
+    precio: 0,
+    estado: false,
     files: [],
   };
 
-  const [autos, setAutos] = useState([]);
-  const [hospedajes, setHospedajes] = useState([]);
+
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    setErrorMessages([])
-    setSuccessMessages([])
-    const obtenerAutos = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/api/autos');
-        setAutos(response.data.autos);
-      } catch (error) {
-        setErrorMessages(error.response);
-      }
-    };
-
-    const obtenerHospedajes = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/api/hospedajes');
-        setHospedajes(response.data.hospedajes);
-      } catch (error) {
-        
-        setErrorMessages(error.response.errors);
-      }
-    };
-
-    obtenerAutos();
-    obtenerHospedajes();
+    setErrorMessages([]);
+    setSuccessMessages([]);
   }, []);
 
   const handleFileInputChange = (files) => {
@@ -63,20 +43,24 @@ function CrearPaquete() {
     setErrorMessages([]);
     setSuccessMessages([]);
 
+    
+
     try {
-      const formData = new FormData();
-      formData.append('nombre', values.nombre);
-      formData.append('descripcion', values.descripcion);
-      formData.append('precio', values.precio);
-      formData.append('autos', JSON.stringify(values.autos));
-      formData.append('hospedajes', JSON.stringify(values.hospedajes));
+        const formData = new FormData();
+        formData.append('nombre', values.nombre);
+        formData.append('marca', values.marca);
+        formData.append('modelo', values.modelo);
+        formData.append('descripcion', values.descripcion);
+        formData.append('categoria', values.categoria);
+        formData.append('precio', values.precio);
+        formData.append('estado', values.estado);
 
       for (let i = 0; i < images.length; i++) {
         formData.append('files', images[i]);
       }
     
 
-      const response = await axios.post('http://localhost:8080/api/paquetes', formData, {
+      const response = await axios.post('http://localhost:8080/api/autos', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -84,7 +68,8 @@ function CrearPaquete() {
       });
        setSuccessMessages([response.data.message]); 
     } catch (error) {
-      setErrorMessages(error.response.data.message); 
+      setErrorMessages([error.response.data.errors]); 
+        console.log(error.response.data);
     }
 
     setLoading(false);
@@ -95,7 +80,7 @@ function CrearPaquete() {
     <>
       {loading ? <LoadingSpinner /> : null}
       <div className="max-w-lg mx-auto bg-white shadow p-6 rounded-lg mt-5">
-        <h1 className="text-2xl font-bold mb-4">Crear Paquete</h1>
+        <h1 className="text-2xl font-bold mb-4">Crear Auto</h1>
         {errorMessages?.length > 0 ? <Error messages={errorMessages} /> : null}
         {successMessages?.map((message, index) => (
           <Success key={index} messages={message} />
@@ -115,6 +100,28 @@ function CrearPaquete() {
                 />
               </div>
               <div>
+                <label htmlFor="marca" className="block text-sm font-medium text-gray-700">
+                  Marca
+                </label>
+                <Field
+                  type="text"
+                  id="marca"
+                  name="marca"
+                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                />
+              </div>
+              <div>
+                <label htmlFor="modelo" className="block text-sm font-medium text-gray-700">
+                  Modelo
+                </label>
+                <Field
+                  type="number"
+                  id="modelo"
+                  name="modelo"
+                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="col-span-2">
                 <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700">
                   Descripción
                 </label>
@@ -123,6 +130,17 @@ function CrearPaquete() {
                   id="descripcion"
                   name="descripcion"
                   rows="4"
+                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                />
+              </div>
+              <div>
+                <label htmlFor="categoria" className="block text-sm font-medium text-gray-700">
+                  Categoria
+                </label>
+                <Field
+                  type="text"
+                  id="categoria"
+                  name="categoria"
                   className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
@@ -138,42 +156,6 @@ function CrearPaquete() {
                 />
               </div>
               <div>
-                <label htmlFor="autos" className="block text-sm font-medium text-gray-700">
-                  Autos
-                </label>
-                <Field
-                  as="select"
-                  multiple
-                  id="autos"
-                  name="autos"
-                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                >
-                  {autos.map((auto) => (
-                    <option key={auto._id} value={auto._id}>
-                      {auto.nombre} - {auto.modelo} - {auto.marca}
-                    </option>
-                  ))}
-                </Field>
-              </div>
-              <div>
-                <label htmlFor="hospedajes" className="block text-sm font-medium text-gray-700">
-                  Hospedajes
-                </label>
-                <Field
-                  as="select"
-                  multiple
-                  id="hospedajes"
-                  name="hospedajes"
-                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                >
-                  {hospedajes.map((hospedaje) => (
-                    <option key={hospedaje._id} value={hospedaje._id}>
-                      {hospedaje.nombre} - {hospedaje.ubicacion}
-                    </option>
-                  ))}
-                </Field>
-              </div>
-              <div>
                 <FileInput label="imagen" name="imagen" onChange={handleFileInputChange} />
               </div>
               <div>
@@ -182,7 +164,7 @@ function CrearPaquete() {
                   disabled={isSubmitting}
                   className="w-full bg-orange-500 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 hover:bg-orange-400"
                 >
-                  Crear Paquete
+                  Crear Auto
                 </button>
               </div>
             </Form>
@@ -193,4 +175,4 @@ function CrearPaquete() {
   );
 }
 
-export default CrearPaquete;
+export default CrearAuto;

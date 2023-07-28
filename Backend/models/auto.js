@@ -28,10 +28,10 @@ const AutoSchema = Schema({
     estado: {
         type: Boolean,
     },
-    imagen: {
+    imagenes: [{
         type: String,
-        required: false, //Cambiar a imagenes y hacer array
-    },
+        required: false,
+    }],
     fechasReservadas: [{
         type: Schema.Types.ObjectId,
         ref: "FechaReservada"

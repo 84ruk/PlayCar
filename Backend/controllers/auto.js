@@ -1,28 +1,46 @@
 const { response } = require("express");
 const Auto = require("../models/auto"); 
+const { uploadFile } = require("../s3");
 
 const crearAuto = async( req, res = response ) => {
 
-    try {
-
-        const { nombre, descripcion, marca, modelo, categoria, precio, estado } = req.body;
-        const auto = new Auto({ nombre, descripcion, marca, modelo, categoria, precio, estado });
-/*         const existeAuto = await Auto.findOne({ nombre }); 
     
+            const { nombre, descripcion, marca, modelo, categoria, precio, estado } = req.body;
+    
+
+    try {
+/*         const existeAuto = await Auto.findOne({ nombre }); 
+        
         if (existeAuto) {
           return res.status(400).json({
             msg: "El auto ya existe",
           });
         }
         NO SE SI VAYAN A HABER AUTOS DUPLICADOS
-       */
-      
+        */
+
+        
+      const uploadedFiles = await Promise.all(
+        req.files.map((file) => uploadFile(file))
+      );
+
+        
+        const auto = new Auto({ 
+            nombre,
+            descripcion,
+            marca,
+            modelo,
+            categoria,
+            precio,
+            estado,
+            imagenes: uploadedFiles 
+        });
+
+
         //Guardar en BDD
         await auto.save();
       
-        res.json({
-            auto
-        });
+        res.json({ message: 'Auto creado correctamente'}); 
 
     } catch (error) {
         console.log(error);
@@ -56,6 +74,25 @@ const obtenerAuto = async( req, res = response ) => {
     
     try {
         const auto = await Auto.findById( id );
+
+        if (!auto) {
+            return res.status(404).json({ msg: 'Hospedaje no encontrado' });
+          }
+
+                // Obtener las fechas reservadas completas a partir de los ObjectIds
+        const fechasReservadasIds = auto.fechasReservadas;
+        const fechasReservadasCompletas = await FechaReservada.find({ _id: { $in: fechasReservadasIds } });
+        // Formatear las fechas completas
+        const fechasFormateadas = fechasReservadasCompletas.map((fechaReservada) => {
+        return {
+            fechaInicio: fechaReservada.fechaInicio.toISOString(),
+            fechaFin: fechaReservada.fechaFin.toISOString(),
+        };
+        });
+        
+        console.log(fechasFormateadas)
+    
+      
         res.json({
             auto
         });

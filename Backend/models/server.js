@@ -62,25 +62,6 @@ class Server {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.static('uploads'));
 
-       
-       /*  this.app.use(cookieParser());
-        this.app.use(
-          session({
-            secret: 'bac92bd3f083dc7fdee2560f9bf58df39f6deea1ec945fa140193683cbd506ce',
-            resave: false,
-            saveUninitialized: false,
-            // Configuraciones adicionales de express-session
-          })
-        );
-        this.app.use('/api/auth', NextAuth(options));
- */
-
-
-        //Habilita lectura de datos
-/*         this.app.use( express.urlencoded({ extended: true })); 
-        this.app.use( cookieParser() );
-        this.app.use(csurf({cookie: true})); */
-
 
 
   

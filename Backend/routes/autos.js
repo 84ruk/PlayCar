@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-
+const multer = require('multer');
+const upload = multer()
 
 const { validarJWT, esAdminRole, validarCampos } = require('../middlewares');
 const { crearAuto, obtenerAutos, obtenerAuto, actualizarAuto, borrarAuto } = require('../controllers/auto');
@@ -8,12 +9,13 @@ const { crearAuto, obtenerAutos, obtenerAuto, actualizarAuto, borrarAuto } = req
 const router = Router();
 
 router.post('/', [
-    validarJWT,
-    esAdminRole,
+    upload.array('files'),
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('categoria', 'La descripcion es obligatoria').not().isEmpty(),
-    check('precio', 'El precio es obligatorio').not().isEmpty(),
-    check('estado', 'El estado es obligatorio').not().isEmpty(), 
+    check('marca', 'La marca es obligatoria').not().isEmpty(),
+    check('descripcion', 'La descripcion es obligatoria').not().isEmpty(),
+    check('precio', 'El precio debe de ser mayor a 100').isFloat({min: 100}),
+    validarJWT,
+    esAdminRole, 
     validarCampos
     ], crearAuto);
 

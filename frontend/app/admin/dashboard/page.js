@@ -6,6 +6,8 @@ import LoadingSpinner from '@/app/components/Loader';
 
 // Importa los componentes usando lazy
 const CrearPaquete = lazy(() => import('./crear-paquete'));
+const CrearAuto = lazy(() => import('./crear-auto'));
+const CrearHospedaje = lazy(() => import('./crear-hospedaje'));
 
 
 function Dashboard() {
@@ -17,8 +19,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="min-width-container flex flex-col w-11/12 max-w-7xl min-w-xl bg-white rounded-lg shadow-lg mt-5 p-10 mx-auto sticky top-10">
-      <Header />
+    <div className="min-width-container flex flex-col w-11/12 max-w-7xl min-w-xl bg-white rounded-lg mt-5 p-10 mx-auto sticky top-10">
       <div className="max-w-7xl py-12 px-4 sm:px-6 lg:px-8 mx-auto">
         <div className="lg:text-center">
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">Dashboard</h2>

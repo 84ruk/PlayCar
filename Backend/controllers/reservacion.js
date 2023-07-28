@@ -4,6 +4,7 @@ const Auto = require("../models/auto");
 const Hospedaje = require("../models/hospedaje");
 const FechaReservada = require("../models/fecha-reservada");
 const Paquete = require("../models/paquete");
+const usuario = require("../models/usuario");
 
 
 const crearReservacionHospedaje = async (req, res = response) => {
@@ -16,6 +17,15 @@ const crearReservacionHospedaje = async (req, res = response) => {
       hospedajeReservado
     } = req.body;
 
+    const existeCliente = await usuario.findById(cliente);
+
+      if(!existeCliente){
+
+        return res.status(404).json({ message: 'El usuario no existe' });
+
+      }
+
+
     const reservacion = new Reservacion({
       cliente,
       fechaInicio,
@@ -24,6 +34,7 @@ const crearReservacionHospedaje = async (req, res = response) => {
       hospedajeReservado,
     });
 
+    console.log('===============================', hospedajeReservado)
     const rangosFechasReservadas = [{
       fechaInicio: new Date(fechaInicio),
       fechaFin: new Date(fechaFin),
@@ -37,7 +48,7 @@ const crearReservacionHospedaje = async (req, res = response) => {
       });
 
       await fechaReservada.save();
-      return fechaReservada._id;
+      return fechaReservada; // Retornar el objeto completo en lugar del ID
     });
 
     reservacion.fechasReservadas = await Promise.all(fechasReservadas);
@@ -46,6 +57,8 @@ const crearReservacionHospedaje = async (req, res = response) => {
       reservacion.save(),
       Hospedaje.findByIdAndUpdate(hospedajeReservado, { $push: { fechasReservadas: { $each: reservacion.fechasReservadas } } })
     ]);
+    
+
 
     res.json({ message: 'Reserva creada correctamente', reserva: reservacion });
   } catch (error) {
@@ -53,6 +66,9 @@ const crearReservacionHospedaje = async (req, res = response) => {
     res.status(500).json({ message: 'Ocurrió un error al crear la reserva' });
   }
 };
+
+
+
 
   
 
@@ -68,6 +84,14 @@ const crearReservacionAuto = async (req, res = response) => {
     } = req.body;
 
 
+    const existeCliente = await usuario.findById(cliente);
+
+    if(!existeCliente){
+
+      return res.status(404).json({ message: 'El usuario no existe' });
+
+    }
+
     const reservacion = new Reservacion({
       cliente,
       fechaInicio,
@@ -88,9 +112,9 @@ const crearReservacionAuto = async (req, res = response) => {
       });
 
       await fechaReservada.save();
-      return fechaReservada._id;
+      return fechaReservada; // Retornar el objeto completo en lugar del ID
     });
-
+    
     reservacion.fechasReservadas = await Promise.all(fechasReservadas);
 
     await Promise.all([
@@ -106,6 +130,9 @@ const crearReservacionAuto = async (req, res = response) => {
 
 }
 
+
+
+
 const crearReservacionPaquete = async (req, res) => {
   try {
     const {
@@ -113,47 +140,93 @@ const crearReservacionPaquete = async (req, res) => {
       fechaInicio,
       fechaFin,
       paqueteReservado,
-      numeroPersonas
+      numeroPersonas,
+      hospedajeReservado,
+      autoReservado,
     } = req.body;
 
-    // Resto del código para crear la reserva de paquete...
-    const reservacion = new Reservacion({
-      cliente,
-      fechaInicio,
-      fechaFin,
-      numeroPersonas,
-      paqueteReservado,
-    });
+    const existeCliente = await usuario.findById(cliente);
 
+    if (!existeCliente) {
+      return res.status(404).json({ message: 'El usuario no existe' });
+    }
+
+    // Resto del código para crear la reserva de paquete...
     const rangosFechasReservadas = [{
       fechaInicio: new Date(fechaInicio),
       fechaFin: new Date(fechaFin),
     }];
 
-    const fechasReservadas = rangosFechasReservadas.map(async (rangoFecha) => {
-      const fechaReservada = new FechaReservada({
-        fechaInicio: rangoFecha.fechaInicio,
-        fechaFin: rangoFecha.fechaFin,
-        reservacion: reservacion._id
-      });
+    // Reservar hospedajes si están incluidos en el paquete
+    if (hospedajeReservado && Array.isArray(hospedajeReservado)) {
+      for (const hospedaje of hospedajeReservado) {
+        const reservacionHospedaje = new Reservacion({
+          cliente,
+          fechaInicio,
+          fechaFin,
+          numeroPersonas,
+          hospedajeReservado: hospedaje._id,
+        });
 
-      await fechaReservada.save();
-      return fechaReservada._id;
-    });
+        const fechasReservadasHospedajes = rangosFechasReservadas.map(async (rangoFecha) => {
+          const fechaReservada = new FechaReservada({
+            fechaInicio: rangoFecha.fechaInicio,
+            fechaFin: rangoFecha.fechaFin,
+            reservacion: reservacionHospedaje._id,
+          });
 
-    reservacion.fechasReservadas = await Promise.all(fechasReservadas);
+          await fechaReservada.save();
+          return fechaReservada;
+        });
 
-    await Promise.all([
-      reservacion.save(),
-      Hospedaje.findByIdAndUpdate(paqueteReservado, { $push: { fechasReservadas: { $each: reservacion.fechasReservadas } } })
-    ]);
+        reservacionHospedaje.fechasReservadas = await Promise.all(fechasReservadasHospedajes);
 
-    res.json({ message: 'Reserva creada correctamente', reserva: reservacion });
+        await Promise.all([
+          reservacionHospedaje.save(),
+          Hospedaje.findByIdAndUpdate(hospedaje._id, { $push: { fechasReservadas: { $each: reservacionHospedaje.fechasReservadas } } }),
+        ]);
+      }
+    }
+
+    // Reservar autos si están incluidos en el paquete
+    if (autoReservado && Array.isArray(autoReservado)) {
+      for (const auto of autoReservado) {
+        const reservacionAuto = new Reservacion({
+          cliente,
+          fechaInicio,
+          fechaFin,
+          numeroPersonas,
+          autoReservado: auto._id,
+        });
+
+        const fechasReservadasAutos = rangosFechasReservadas.map(async (rangoFecha) => {
+          const fechaReservada = new FechaReservada({
+            fechaInicio: rangoFecha.fechaInicio,
+            fechaFin: rangoFecha.fechaFin,
+            reservacion: reservacionAuto._id,
+          });
+
+          await fechaReservada.save();
+          return fechaReservada;
+        });
+
+        reservacionAuto.fechasReservadas = await Promise.all(fechasReservadasAutos);
+
+        await Promise.all([
+          reservacionAuto.save(),
+          Auto.findByIdAndUpdate(auto._id, { $push: { fechasReservadas: { $each: reservacionAuto.fechasReservadas } } }),
+        ]);
+      }
+    }
+
+    res.json({ message: 'Reserva de paquete creada correctamente' });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Ocurrió un error al crear la reserva de paquete' });
   }
 };
+
 
 
   const crearReservacion = async (req, res = response) => {
@@ -206,6 +279,7 @@ const crearReservacionPaquete = async (req, res) => {
       res.status(500).json({ message: 'Ocurrió un error al crear la reserva' });
     }
 }
+
 
 
 const obtenerReservaciones = async (req, res = response) => {

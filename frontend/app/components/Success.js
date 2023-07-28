@@ -1,5 +1,5 @@
 export default function Success({ messages }) {
-  console.log(messages)
+  
   return (
     messages && (
       <div className="flex items-center justify-center h-full mt-5">

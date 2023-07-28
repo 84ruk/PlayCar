@@ -9,9 +9,6 @@ const HospedajeSchema = Schema({
         calle: String,
         numero: String,
         ciudad: String,
-        estado: String,
-        codigoPostal: String,
-        pais: String
       },
     tipo: {
         type: String,

@@ -31,6 +31,7 @@ router.post('/hospedaje',[
 
 router.post('/paquete',[
     validarJWT,
+    validarFechasMiddleware,
     validarCampos 
 ], crearReservacionPaquete );
   

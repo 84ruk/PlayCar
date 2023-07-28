@@ -42,6 +42,7 @@ const { crearPaquete, obtenerPaquetes, actualizarPaquete, obtenerPaquete } = req
 const router = Router();
 
 router.post('/', [
+
       // Aquí indicas el nombre del campo en el FormData
     upload.array('files'),
     validarJWT,
