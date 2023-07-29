@@ -12,22 +12,11 @@ const validarJWT = async (req, res = response, next) => {
     });
   }
 
- try {
-    const parsedCookies = parse(token);
-    const authToken = parsedCookies['auth-token'];
+  try {
+    const tokenWithoutBearer = token.replace("Bearer ", ""); // Eliminar el prefijo "Bearer " del token
 
-    if (!authToken) {
-      return res.status(401).json({
-        ok: false,
-        msg: "No se proporcionó un token de autenticación válido",
-      });
-    }
+    const { uid } = jwt.verify(tokenWithoutBearer, process.env.JWT_SECRET);
 
-    const { payload, nonce } = jwt.verify(authToken, process.env.JWT_SECRET);
-
-    // Aquí puedes realizar validaciones adicionales, como verificar la validez del nonce
-
-    const { uid } = payload;
     const usuario = await Usuario.findById(uid);
 
     if (!usuario) {
@@ -52,13 +41,11 @@ const validarJWT = async (req, res = response, next) => {
       msg: "Token no válido",
     });
   }
-
 };
 
 module.exports = {
   validarJWT,
 };
-
 
 
 /*  */

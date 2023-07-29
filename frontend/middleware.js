@@ -9,41 +9,41 @@ import jwt from "jsonwebtoken";
 export async function middleware(req) {
 
   const session = await getToken({ req, secret: process.env.JWT_SECRET});
-  console.log('session', session);
   
+  if(!session){
+      const requestedPage = req.nextUrl.pathname;
 
-  /* if(!session){
+      const url = req.nextUrl.clone();
+      url.pathname = `/auth/login`;
+      url.search = `?p=${requestedPage}`;
 
-    const requestedPage = req.nextUrl.pathname;
-    const url = req.nextUrl.clone();
-    url.pathname = `/auth/login`;
-    url.search = `?p=${requestedPage}`;
-
-    return NextResponse.redirect( url );
+      return NextResponse.redirect(url);
   }
 
-  try {
-    // Validar el nonce del token JWT
-    const decodedToken = jwt.verify(session.jwt, process.env.JWT_SECRET, {
-      maxAge: 100 * 60 * 60 * 24 * 30, // Tiempo de validez del token (ajusta según tus necesidades)
-    });
+  if(session){
+    const requestedPage = req.nextUrl.pathname;
 
-    // Obtener el Nonce almacenado en el token
-    const nonce = decodedToken.nonce;
+    if(requestedPage.startsWith('/auth/') || requestedPage.startsWith('/admin/') && session.user.rol !== "ADMIN_ROLE"){
+      const url = req.nextUrl.clone();
+      url.pathname = `/`;
+      url.search = `?p=${requestedPage}`;
+      return NextResponse.redirect(url);
+    }
 
-    // Si el token es válido y el Nonce coincide, puedes continuar con el flujo normal
 
-    return NextResponse.next();
-  } catch (error) {
-    // Si el token no es válido o el Nonce no coincide, redirige al usuario a la página de inicio de sesión
-    console.log(error)
-    return NextResponse.next();
-    return NextResponse.redirect('/auth/login');
-  } */
-  
-
+  }
 }
- 
+
+
+export const config = {
+  matcher:[ 
+    '/pagar/:path*', '/admin/:path*', '/', '/auth/login' /* '/auth/login', '/auth/register' */],
+  skipMiddlewareUrlNormalize: [
+    
+    '/auth/register',
+  ],
+ // Rutas protegidas
+}
 /* 
 
 
@@ -82,16 +82,6 @@ export async function middleware(req) {
 
   } */
   
-
-export const config = {
-  matcher:[ 
-    '/pagar/:path*', '/admin/:path*', '/' /* '/auth/login', '/auth/register' */],
-  skipMiddlewareUrlNormalize: [
-    '/auth/login',
-    '/auth/register',
-  ],
- // Rutas protegidas
-}
 
 /*   if (request.nextUrl.pathname === '/details') {
     const token = request.cookies.get('auth-token');

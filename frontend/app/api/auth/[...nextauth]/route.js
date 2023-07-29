@@ -68,7 +68,7 @@ const options = {
         token.user = user;
       }
 
-      console.log(token);
+      console.log('token, route nextauht', token);
       return token;
       
       /* if( user ) user. = user; */ //no se por que
