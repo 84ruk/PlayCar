@@ -1,9 +1,6 @@
 import { getToken } from 'next-auth/jwt';
-import { getSession, useSession } from 'next-auth/react';
 import { NextResponse } from 'next/server'
-const jose = require('jose');
-const { convertVariableToUint8Array } = require('./helpers/convertVariableToUint8Array');
-import jwt from "jsonwebtoken";
+
 
 
 export async function middleware(req) {
