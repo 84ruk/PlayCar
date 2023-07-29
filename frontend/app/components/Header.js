@@ -12,19 +12,20 @@ const Header = () => {
 
   const { data: session } = useSession();
   
-  
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const isLinkSelected = (actualPathname) => {
     return pathname === actualPathname ? 'text-orange-500' : 'text-nextjs13';
   };
-
+  
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
+  
+  
   return (
     <header className="bg-white sticky top-0 z-10 w-full">
+      
       <div className="container mx-auto px-4 pb-3 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-gray-800">Play Car</h1>
@@ -49,6 +50,7 @@ const Header = () => {
               <Image src={Cart} alt="carrito" width={30} height={30} />
             </span>
           </Link>
+          {/* {console.log('session', session?.user)} */}
           {session?.user?.rol === 'ADMIN_ROLE' && (
             <Link href="/admin/dashboard">
               <span className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/admin/dashboard')}`}>Dashboard</span>

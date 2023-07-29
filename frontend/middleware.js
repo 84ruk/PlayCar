@@ -7,38 +7,41 @@ export async function middleware(req) {
 
   const session = await getToken({ req, secret: process.env.JWT_SECRET});
   
-  if(!session){
-      const requestedPage = req.nextUrl.pathname;
 
+  if( !session && !req.nextUrl.pathname.startsWith('/auth')){
+    
+      const requestedPage = req.nextUrl.pathname;
       const url = req.nextUrl.clone();
       url.pathname = `/auth/login`;
-      url.search = `?p=${requestedPage}`;
+      url.search = `p=${requestedPage}`;
 
       return NextResponse.redirect(url);
   }
 
-  if(session){
+    if(session){
     const requestedPage = req.nextUrl.pathname;
 
     if(requestedPage.startsWith('/auth/') || requestedPage.startsWith('/admin/') && session.user.rol !== "ADMIN_ROLE"){
       const url = req.nextUrl.clone();
       url.pathname = `/`;
-      url.search = `?p=${requestedPage}`;
+      url.search = `p=${requestedPage}`;
       return NextResponse.redirect(url);
     }
 
 
-  }
+  } 
+  
+  return NextResponse.next();
 }
 
 
 export const config = {
   matcher:[ 
-    '/pagar/:path*', '/admin/:path*', '/', '/auth/login' /* '/auth/login', '/auth/register' */],
-  skipMiddlewareUrlNormalize: [
-    
+    '/pagar/:path*', '/admin/:path*', '/', '/auth/:path*', '/auth/:path'  /* , '/auth/register' */],
+/*   skipMiddlewareUrlNormalize: [
+    '/auth/login'
     '/auth/register',
-  ],
+  ], */
  // Rutas protegidas
 }
 /* 
