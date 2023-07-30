@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
+import { signOut } from 'next-auth/react';
 
 const options = {
   providers: [
@@ -82,9 +83,31 @@ const options = {
 
     },
     signout: async (req, res) => {
-      //Implementar logica para eliminar el token
-      //hacer peticion
-      await signout(req, res);
+      try {
+        // Llamada a la función "signout" para cerrar sesión en el backend
+        const response = await fetch('http://localhost:8080/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+
+        if(response.ok) {
+          await signOut({ redirect: false })
+          return Promise.resolve(true);
+        }
+        else {
+          // Si la petición al backend falla o no obtiene una respuesta "ok", no cerramos la sesión en el frontend
+          console.error('Error en el cierre de sesión: No se pudo cerrar sesión en el backend');
+          return Promise.resolve(false);
+        }
+        // Realiza el cierre de sesión en NextAuth.js
+        return Promise.resolve({ ...session, user: null, accessToken: null });
+      } catch (error) {
+        // Manejar errores si es necesario
+        console.error('Error en el cierre de sesión:', error);
+        return Promise.resolve({ ...session });
+      }
     },
   },
   secret: process.env.NEXTAUTH_SECRET
@@ -93,24 +116,3 @@ const options = {
 const handler = NextAuth(options);
 
 export { handler as GET, handler as POST };
-/*       try {
-        const response = await fetch('http://localhost:8080/api/auth/session', {
-          method: 'GET',
-          headers: {
-            headers: {
-            'Content-Type': 'application/json',
-            Authorization: `auth-token=${token.user.jwt}`
-            }
-          }
-        })
-       if(response.authenticated){
-        return {
-          ...session,
-        }
-
-       } else {
-        console.log('No autenticado');
-       }
-      } catch (error) {
-        console.log(error);
-      } */

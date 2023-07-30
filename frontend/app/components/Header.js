@@ -5,7 +5,7 @@ import Profile from '../../public/profile.svg';
 import Image from 'next/image';
 import Logo from '../../public/logo.png';
 import Cart from '../../public/shoppingcart.svg';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
 
 const Header = () => {
@@ -25,7 +25,7 @@ const Header = () => {
   
   return (
     <header className="bg-white sticky top-0 z-10 w-full">
-      
+       
       <div className="container mx-auto px-4 pb-3 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-gray-800">Play Car</h1>
@@ -50,7 +50,11 @@ const Header = () => {
               <Image src={Cart} alt="carrito" width={30} height={30} />
             </span>
           </Link>
-          {/* {console.log('session', session?.user)} */}
+          {session?.user && (
+            <Link className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/contacto')}`} href="/profile">
+              Cerrar Sesion
+            </Link>
+          )}
           {session?.user?.rol === 'ADMIN_ROLE' && (
             <Link href="/admin/dashboard">
               <span className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/admin/dashboard')}`}>Dashboard</span>
@@ -103,6 +107,11 @@ const Header = () => {
                 <Image src={Cart} alt="carrito" width={30} height={30} />
               </span>
             </Link>
+            {session?.user && (
+            <span className={'cursor-pointer font-medium text-gray-600 hover:text-orange-500'} onClick={() => signOut()}>
+              Cerrar Sesion
+            </span>
+          )}
             {session?.user?.rol === 'ADMIN_ROLE' && (
               <Link href="/admin/dashboard">
                 <span className={`block font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/admin/dashboard')}`} onClick={toggleMenu}>

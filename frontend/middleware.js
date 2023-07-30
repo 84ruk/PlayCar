@@ -6,7 +6,6 @@ import { NextResponse } from 'next/server'
 export async function middleware(req) {
 
   const session = await getToken({ req, secret: process.env.JWT_SECRET});
-  
 
   if( !session && !req.nextUrl.pathname.startsWith('/auth')){
     
@@ -19,7 +18,17 @@ export async function middleware(req) {
   }
 
     if(session){
+
+    const currentTimestamp = Math.floor(Date.now() / 1000);
     const requestedPage = req.nextUrl.pathname;
+
+    if (session.exp < currentTimestamp) {
+      const url = req.nextUrl.clone();
+      url.pathname = `/auth/login`;
+      url.search = `p=${requestedPage}`;
+      return NextResponse.redirect(url);
+    }
+
 
     if(requestedPage.startsWith('/auth/') || requestedPage.startsWith('/admin/') && session.user.rol !== "ADMIN_ROLE"){
       const url = req.nextUrl.clone();
@@ -37,7 +46,7 @@ export async function middleware(req) {
 
 export const config = {
   matcher:[ 
-    '/pagar/:path*', '/admin/:path*', '/', '/auth/:path*', '/auth/:path'  /* , '/auth/register' */],
+    '/pagar/:path*', '/admin/:path*', '/auth/:path*'  /* , '/auth/register' */],
 /*   skipMiddlewareUrlNormalize: [
     '/auth/login'
     '/auth/register',

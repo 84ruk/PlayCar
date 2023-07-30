@@ -75,11 +75,19 @@ const logout = async (req, res = response) => {
   try {
     const token = req.cookies['auth-token']; // Obtén el valor de la cookie "auth-token"
 
+    if(!token){
+      return res.status(400).json({
+        msg: "No hay token en la petición"
+      });
+    }
+
+    jwt.verify(token, procces.env.JWT_SECRET);
+
     const serialized = serialize('auth-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 0,
+      maxAge: -1,
       path: '/',
     });
     res.setHeader("Set-Cookie", serialized);
@@ -89,37 +97,15 @@ const logout = async (req, res = response) => {
     });
     }
    catch (error) {
-    console.log(error); // Imprime el error en la consola para depuración
+    console.log(error); 
     return res.status(400).json({
       msg: "Token no válido",
     });
   }
 };
 
-
-const session = async (req, res = response) => {
-  console.log('req.usuario')
-  if(req.usuario) {
-    console.log(req.usuario);
-    return res.json({
-      authenticated: true,
-      user: {
-        nombre: req.usuario.nombre,
-        correo: req.usuario.correo,
-        rol: req.usuario.rol,
-      }
-    })
-  } else {
-    res.json({
-      authenticated: false,
-      user: null
-    })
-  }
-}
-
 module.exports = {
   login,
   logout,
-  session
 };
 

@@ -3,12 +3,11 @@ const { check } = require('express-validator');
 
 const { validarCampos } = require('../middlewares/valida-campos');
 
-const { login, logout, session } = require('../controllers/auth');
+const { login, logout } = require('../controllers/auth');
 const { validarJWT } = require('../middlewares');
 
 const router = Router();
 
-router.get('/session', validarJWT, session);
 
 
 router.post("/login", 
