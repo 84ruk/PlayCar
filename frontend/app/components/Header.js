@@ -4,9 +4,10 @@ import { usePathname } from 'next/navigation';
 import Profile from '../../public/profile.svg';
 import Image from 'next/image';
 import Logo from '../../public/logo.png';
-import Cart from '../../public/shoppingcart.svg';
+import CartSVG from '../../public/shoppingcart.svg';
 import { signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
+
 
 const Header = () => {
 
@@ -14,17 +15,20 @@ const Header = () => {
   
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+
   const isLinkSelected = (actualPathname) => {
     return pathname === actualPathname ? 'text-orange-500' : 'text-nextjs13';
   };
   
+  
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-  
+
+
   
   return (
-    <header className="bg-white sticky top-0 z-10 w-full">
+    <header className="bg-white sticky top-0 z-10 w-full p-2">
        
       <div className="container mx-auto px-4 pb-3 flex items-center justify-between">
         <div>
@@ -40,20 +44,32 @@ const Header = () => {
           <Link href="/contacto">
             <span className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/contacto')}`}>Contacto</span>
           </Link>
-          <Link href="/profile">
-            <span className="cursor-pointer">
-              <Image src={Profile} alt="profile" width={35} height={35} className="rounded-full" />
-            </span>
-          </Link>
-          <Link href="/shopping-cart">
-            <span className="cursor-pointer">
-              <Image src={Cart} alt="carrito" width={30} height={30} />
-            </span>
-          </Link>
-          {session?.user && (
-            <Link className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/contacto')}`} href="/profile">
-              Cerrar Sesion
+
+          {session?.user ? (
+            <>
+              <Link href="/profile">
+              <span className="cursor-pointer">
+                <Image src={Profile} alt="profile" width={35} height={35} className="rounded-full" />
+              </span>
+              </Link>
+              <Link href={'/shopping-cart'} className='hover:text-orange-500 hover:pointer'>
+                  <Image src={CartSVG} alt="carrito" width={30} height={30} />
+                </Link>
+                <button className='cursor-pointer font-medium text-gray-600 hover:text-orange-500' onClick={() => signOut()}>
+                Cerrar Sesion
+              </button>
+            </>
+          ) : (
+            <>
+            
+            <Link href={'/auth/login'} className='cursor-pointer font-medium text-gray-600 hover:text-orange-500'>
+              Iniciar Sesion
             </Link>
+            <Link href={'/auth/register'} className='cursor-pointer font-medium text-gray-600 hover:text-orange-500'>
+              Registrarse
+            </Link>
+
+            </>
           )}
           {session?.user?.rol === 'ADMIN_ROLE' && (
             <Link href="/admin/dashboard">
@@ -61,6 +77,8 @@ const Header = () => {
             </Link>
           )}
         </div>
+
+        {/* HEADER MOBILE  */}
         <div className="flex items-center lg:hidden">
           <span className="inline-block" onClick={toggleMenu}>
             <svg
@@ -97,20 +115,31 @@ const Header = () => {
                 Contacto
               </span>
             </Link>
-            <Link href="/profile">
-              <span className="block cursor-pointer" onClick={toggleMenu}>
+            {session?.user ? (
+            <>
+              <Link href="/profile" >
+              <span className="cursor-pointer">
                 <Image src={Profile} alt="profile" width={35} height={35} className="rounded-full" />
               </span>
+              </Link>
+              <Link href={'/shopping-cart'} className='hover:text-orange-500 hover:pointer'>
+                  <Image src={CartSVG} alt="carrito" width={30} height={30} />
+              </Link>
+              <button className='cursor-pointer font-medium text-gray-600 hover:text-orange-500' onClick={() => signOut()}>
+                Cerrar Sesion
+              </button>
+            </>
+          ) : (
+            <>
+            
+            <Link href={'/auth/login'} className='cursor-pointer font-medium text-gray-600 hover:text-orange-500'>
+              Iniciar Sesion
             </Link>
-            <Link href="/shopping-cart">
-              <span className="block cursor-pointer" onClick={toggleMenu}>
-                <Image src={Cart} alt="carrito" width={30} height={30} />
-              </span>
+            <Link href={'/auth/register'} className='cursor-pointer font-medium text-gray-600 hover:text-orange-500'>
+              Registrarse
             </Link>
-            {session?.user && (
-            <span className={'cursor-pointer font-medium text-gray-600 hover:text-orange-500'} onClick={() => signOut()}>
-              Cerrar Sesion
-            </span>
+
+            </>
           )}
             {session?.user?.rol === 'ADMIN_ROLE' && (
               <Link href="/admin/dashboard">
