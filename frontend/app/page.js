@@ -1,11 +1,15 @@
-
-import Link from 'next/link';
-import Header from './components/Header';
-import Paquetes from './paquetes';
-import Pasos from './pasos';
-import Head from 'next/head';
 import Image from 'next/image';
+import Head from 'next/head';
+import Link from 'next/link';
+
+import Header from './components/Header';
+
+import Paquetes from './paquetes';
+import Autos from './autos';
+import Pasos from './pasos';
+
 import Flecha from '../public/Arrow_Up_Right_LG.svg';
+import Hospedajes from './hospedajes';
 
 
 export default async function Home() {
@@ -53,7 +57,12 @@ export default async function Home() {
       </div>
 
         <Pasos />
+
         <Paquetes />
+
+        <Autos />
+
+        <Hospedajes />
 
 
     </>

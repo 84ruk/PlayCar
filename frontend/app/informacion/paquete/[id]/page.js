@@ -32,8 +32,7 @@ export default async function DetallePaquete ({
             <Image
               src="/URL_OF_FALLBACK_IMAGE"
               alt="Fallback Image"
-              layout="fill"
-              objectFit="cover"
+              
             />
           ) : (
             paquete.imagenes.map((imagen, index) => (
@@ -43,10 +42,8 @@ export default async function DetallePaquete ({
                 alt={`Imagen ${index + 1}`}
                 width={500}
                 height={500}
-                layout='responsive'
-                objectFit='contain'
                 priority
-                className='max-w-lg mx-auto'
+                className='max-w-lg mx-auto w-auto h-auto'
               />
             ))
           )}
@@ -69,7 +66,7 @@ export default async function DetallePaquete ({
                      alt={auto.nombre}
                      width={300}
                      height={200}
-                     className="w-full h-auto mb-4 rounded-lg shadow-md"
+                     className="w-full h-auto mb-4 rounded-lg shadow-md "
                    />
                  ) : (
                    <div className="w-full h-40 bg-gray-300 mb-4 rounded-lg shadow-md"></div>
@@ -109,7 +106,7 @@ export default async function DetallePaquete ({
                                     alt={hospedaje.nombre}
                                     width={300}
                                     height={200}
-                                    className="w-full h-auto mb-4 rounded-lg shadow-md"
+                                    className="w-full h-auto mb-4 rounded-lg shadow-md "
                                   />
                                 ) : (
                                   <div className="w-full h-40 bg-gray-300 mb-4 rounded-lg shadow-md"></div>

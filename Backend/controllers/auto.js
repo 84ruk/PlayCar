@@ -1,6 +1,8 @@
 const { response } = require("express");
 const Auto = require("../models/auto"); 
 const { uploadFile } = require("../s3");
+const FechaReservada = require("../models/fecha-reservada");
+
 
 const crearAuto = async( req, res = response ) => {
 
@@ -70,31 +72,30 @@ const obtenerAutos = async( req, res = response ) => {
 
 const obtenerAuto = async( req, res = response ) => {
 
+  console.log('hola')
     const { id } = req.params;
     
     try {
         const auto = await Auto.findById( id );
 
         if (!auto) {
-            return res.status(404).json({ msg: 'Hospedaje no encontrado' });
+            return res.status(404).json({ msg: 'Auto no encontrado' });
           }
 
-                // Obtener las fechas reservadas completas a partir de los ObjectIds
-        const fechasReservadasIds = auto.fechasReservadas;
-        const fechasReservadasCompletas = await FechaReservada.find({ _id: { $in: fechasReservadasIds } });
-        // Formatear las fechas completas
-        const fechasFormateadas = fechasReservadasCompletas.map((fechaReservada) => {
-        return {
-            fechaInicio: fechaReservada.fechaInicio.toISOString(),
-            fechaFin: fechaReservada.fechaFin.toISOString(),
-        };
-        });
+          const fechasReservadasIds = auto.fechasReservadas;
+          const fechasReservadasCompletas = await FechaReservada.find({ _id: { $in: fechasReservadasIds } });
+          // Formatear las fechas completas
+          const fechasFormateadas = fechasReservadasCompletas.map((fechaReservada) => {
+            return {
+              fechaInicio: fechaReservada.fechaInicio.toISOString(),
+              fechaFin: fechaReservada.fechaFin.toISOString(),
+            };
+          });
         
-        console.log(fechasFormateadas)
-    
       
         res.json({
-            auto
+            auto,
+            fechasFormateadas
         });
     } catch (error) {
         console.log(error);

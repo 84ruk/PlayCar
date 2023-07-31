@@ -28,7 +28,7 @@ export default async function Paquetes() {
           >
             <div className="mx-auto mb-4">
               {paquete.imagenes.length > 0 ? (
-                <Image src={paquete.imagenes[0]} alt="Imagen del paquete" width={300} height={200} className="rounded-lg" />
+                <Image src={paquete.imagenes[0]} alt="Imagen del paquete" width={300} height={200} className="rounded-lg w-auto h-auto" />
 
               ) : (
                 null

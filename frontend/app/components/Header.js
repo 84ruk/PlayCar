@@ -101,16 +101,16 @@ const Header = () => {
         <div className="lg:hidden bg-white py-2">
           <div className="container mx-auto px-4 flex flex-col space-y-4">
             <Link href="/">
-              <span className={`block font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/')}`} onClick={toggleMenu}>
+              <span className={`block font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/')}`} onClick={toggleMenu} title="Ir a Inicio">
                 Inicio
               </span>
             </Link>
-            <Link href="/catalogo">
+            <Link href="/catalogo" title="Ir a la seccion de Catalogo">
               <span className={`block font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/catalogo')}`} onClick={toggleMenu}>
                 Catálogo
               </span>
             </Link>
-            <Link href="/contacto">
+            <Link href="/contacto" title="Ir a la seccion de Catalogo">
               <span className={`block font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/contacto')}`} onClick={toggleMenu}>
                 Contacto
               </span>
@@ -119,23 +119,26 @@ const Header = () => {
             <>
               <Link href="/profile" >
               <span className="cursor-pointer">
-                <Image src={Profile} alt="profile" width={35} height={35} className="rounded-full" />
+                <Image src={Profile} width={35} height={35} className="rounded-full" alt="Foto de Pefil"/>
               </span>
               </Link>
-              <Link href={'/shopping-cart'} className='hover:text-orange-500 hover:pointer'>
+              <Link href={'/shopping-cart'} className='hover:text-orange-500 hover:pointer' title="Ir al carrito de compras">
                   <Image src={CartSVG} alt="carrito" width={30} height={30} />
               </Link>
-              <button className='cursor-pointer font-medium text-gray-600 hover:text-orange-500' onClick={() => signOut()}>
+              <span className='cursor-pointer font-medium text-gray-600 hover:text-orange-500'>
+              <button onClick={() => signOut()}>
+
                 Cerrar Sesion
               </button>
+              </span>
             </>
           ) : (
             <>
             
-            <Link href={'/auth/login'} className='cursor-pointer font-medium text-gray-600 hover:text-orange-500'>
+            <Link href={'/auth/login'} className='cursor-pointer font-medium text-gray-600 hover:text-orange-500' title="Ir a Iniciar Sesion">
               Iniciar Sesion
             </Link>
-            <Link href={'/auth/register'} className='cursor-pointer font-medium text-gray-600 hover:text-orange-500'>
+            <Link href={'/auth/register'} className='cursor-pointer font-medium text-gray-600 hover:text-orange-500' title="Registrarse">
               Registrarse
             </Link>
 
