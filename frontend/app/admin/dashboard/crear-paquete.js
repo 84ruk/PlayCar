@@ -9,11 +9,16 @@ import Error from '@/app/components/Error';
 import LoadingSpinner from '@/app/components/Loader';
 import Success from '@/app/components/Success';
 
+// Get a cookie
+
+
+
 function CrearPaquete() {
   const { loading, setLoading, setErrorMessages, errorMessages, successMessages, setSuccessMessages } = useAppContext();
+
   const { data: session } = useSession();
   const token = session?.user.jwt;
-  
+
   const initialValues = {
     nombre: '',
     descripcion: '',
@@ -57,7 +62,6 @@ function CrearPaquete() {
     const fileList = Array.from(files); // Convertir el FileList a un array de Files
     setImages(fileList);
   };
-  
   const handleSubmit = async (values, { setSubmitting }) => {
     setLoading(true);
     setErrorMessages([]);

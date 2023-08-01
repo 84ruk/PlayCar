@@ -24,7 +24,7 @@ const options = {
           });
 
           if (response.ok) {
-            const { usuario } = await response.json();
+            const { usuario, token } = await response.json();
             
 
             // Aquí construyes el objeto de usuario con los datos necesarios
@@ -33,6 +33,7 @@ const options = {
               email: usuario.correo,
               rol: usuario.rol,
               uid: usuario.uid,
+              jwt: token
             };
             
             
@@ -67,6 +68,7 @@ const options = {
 
       if(user){ 
         token.user = user;
+        user.jwt = token.user.jwt;
       }
 
       return token;
@@ -75,6 +77,7 @@ const options = {
     },
     async session({ session, token, user }) {
 
+      
       if(token){ 
         session.user = token.user; 
       }

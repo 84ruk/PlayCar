@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,7 +8,8 @@ export default async function Hospedajes() {
 
     const { data } = await axios.get('http://localhost:8080/api/hospedajes');
     const hospedajes = data.hospedajes;
-    console.log(hospedajes);
+
+
     return (
         <>
         

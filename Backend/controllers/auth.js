@@ -60,6 +60,7 @@ const login = async (req, res) => {
     return res.json({
       msg: "Login",
       usuario,
+      token
     });
   } catch (error) {
     console.log(error);
