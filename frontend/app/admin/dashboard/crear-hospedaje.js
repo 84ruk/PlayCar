@@ -3,14 +3,15 @@ import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import FileInput from './fileinput';
-import { useSession } from 'next-auth/react';
 import { useAppContext } from '@/app/context/appContextProvider';
 import Error from '@/app/components/Error';
 import LoadingSpinner from '@/app/components/Loader';
 import Success from '@/app/components/Success';
+import { useSession } from 'next-auth/react';
 
 function CrearHospedaje() {
   const { loading, setLoading, setErrorMessages, errorMessages, successMessages, setSuccessMessages } = useAppContext();
+
   const { data: session } = useSession();
   const token = session?.user.jwt;
   

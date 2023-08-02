@@ -13,7 +13,6 @@ const BotonReserva = ({ fechasFormateadas, id }) => {
 
   const { data: session, status } = useSession();
   const { loading, setLoading, setErrorMessages, errorMessages, setSuccessMessages, successMessages} = useAppContext();
-  console.log(fechasFormateadas)
   const clienteId = session?.user?.uid 
   const token = session?.user.jwt;
 

@@ -3,6 +3,7 @@ import { useState, lazy, Suspense } from 'react';
 import Header from '../../components/Header';
 import { useAppContext } from '@/app/context/appContextProvider';
 import LoadingSpinner from '@/app/components/Loader';
+import ReservacionesList from './reservaciones';
 
 // Importa los componentes usando lazy
 const CrearPaquete = lazy(() => import('./crear-paquete'));
@@ -13,6 +14,7 @@ const CrearHospedaje = lazy(() => import('./crear-hospedaje'));
 function Dashboard() {
   const [activeTab, setActiveTab] = useState('paquete');
   const { loading, setLoading, setErrorMessages, errorMessages, setSuccessMessages} = useAppContext();
+
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -63,6 +65,9 @@ function Dashboard() {
             {activeTab === 'hospedaje' && <CrearHospedaje />}
         </div>
       </div>
+
+      <ReservacionesList />
+
     </div>
   );
 }
