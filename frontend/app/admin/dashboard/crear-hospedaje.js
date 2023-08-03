@@ -72,7 +72,7 @@ function CrearHospedaje() {
       }
     
 
-      const response = await axios.post('http://localhost:8080/api/hospedajes', formData, {
+      const response = await axios.post(`${process.env.URL_BACKEND}/hospedajes`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

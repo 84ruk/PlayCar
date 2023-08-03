@@ -6,8 +6,8 @@ import FileInput from './fileinput';
 import { useSession } from 'next-auth/react';
 import { useAppContext } from '@/app/context/appContextProvider';
 import Error from '@/app/components/Error';
-import LoadingSpinner from '@/app/components/Loader';
 import Success from '@/app/components/Success';
+import LoadingBox from '@/app/components/LoadingBox';
 
 // Get a cookie
 
@@ -97,8 +97,8 @@ function CrearPaquete() {
 
   return (
     <>
-      {loading ? <LoadingSpinner /> : null}
-      <div className="max-w-lg mx-auto bg-white shadow p-6 rounded-lg mt-5">
+      {loading ? <LoadingBox /> : (
+        <div className="max-w-lg mx-auto bg-white shadow p-6 rounded-lg mt-5">
         <h1 className="text-2xl font-bold mb-4">Crear Paquete</h1>
         {errorMessages?.length > 0 ? <Error messages={errorMessages} /> : null}
         {successMessages?.map((message, index) => (
@@ -193,6 +193,8 @@ function CrearPaquete() {
           )}
         </Formik>
       </div>
+      )}
+      
     </>
   );
 }

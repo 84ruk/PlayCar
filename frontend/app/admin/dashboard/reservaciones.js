@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import ReservacionItem from './reservacion-item';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import LoadingSpinner from '@/app/components/Loader';
 import { useAppContext } from '@/app/context/appContextProvider';
+import LoadingBox from '@/app/components/LoadingBox';
 
 const ReservacionesList = () => {
 
@@ -77,7 +77,7 @@ const ReservacionesList = () => {
 
   return (
     <>
-    {loading ? <LoadingSpinner /> /* AQUI IRA LOADING */ : null}
+    {loading ? <LoadingBox /> /* AQUI IRA LOADING */ : null}
     <div className="max-w-lg mx-auto">
     <div className="space-x-2 md:space-x-4 mb-4">
       {/* Botones de filtro */}

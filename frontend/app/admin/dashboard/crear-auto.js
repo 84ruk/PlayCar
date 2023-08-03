@@ -13,7 +13,7 @@ function CrearAuto() {
   const { loading, setLoading, setErrorMessages, errorMessages, successMessages, setSuccessMessages } = useAppContext();
   const { data: session } = useSession();
   const token = session?.user.jwt;
-  console.log(session);
+
   const initialValues = {
     nombre: '',
     marca: '',
@@ -60,7 +60,7 @@ function CrearAuto() {
       }
     
 
-      const response = await axios.post('http://localhost:8080/api/autos', formData, {
+      const response = await axios.post(`${process.env.URL_BACKEND}/autos`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

@@ -22,6 +22,8 @@ export async function middleware(req) {
     const currentTimestamp = Math.floor(Date.now() / 1000);
     const requestedPage = req.nextUrl.pathname;
 
+      console.log(session.exp < currentTimestamp);
+
     if (session.exp < currentTimestamp) {
       const url = req.nextUrl.clone();
       url.pathname = `/auth/login`;
@@ -46,7 +48,7 @@ export async function middleware(req) {
 
 export const config = {
   matcher:[ 
-    '/pagar/:path*', '/admin/:path*', '/auth/:path*'  /* , '/auth/register' */],
+    '/pagar/:path*', '/admin', '/auth/:path*', '/admin/:path*'  /* , '/auth/register' */],
 /*   skipMiddlewareUrlNormalize: [
     '/auth/login'
     '/auth/register',

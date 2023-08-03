@@ -2,7 +2,6 @@
 import { useState, lazy, Suspense } from 'react';
 import Header from '../../components/Header';
 import { useAppContext } from '@/app/context/appContextProvider';
-import LoadingSpinner from '@/app/components/Loader';
 import ReservacionesList from './reservaciones';
 
 // Importa los componentes usando lazy
