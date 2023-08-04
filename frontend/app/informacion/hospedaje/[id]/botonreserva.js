@@ -54,14 +54,12 @@ const BotonReserva = ({ fechasFormateadas, id }) => {
 
     e.preventDefault();
     if (!fechaInicio || !fechaFin) {
-      setError(true);
-      console.log('Por favor selecciona un rango de fechas válido.');
+      setErrorMessages(['Por favor selecciona un rango de fechas válido.']);
       return;
     }
   
     if (new Date(fechaFin) < new Date(fechaInicio)) {
-      setError(true);
-      console.log('La fecha de fin no puede ser anterior a la fecha de inicio.');
+      setErrorMessages(['La fecha de fin no puede ser anterior a la fecha de inicio.']);
       return;
     }
   
@@ -72,7 +70,7 @@ const BotonReserva = ({ fechasFormateadas, id }) => {
       const fechaFinFormateada = fechaFin.toISOString().split('T')[0];
   
       const response = await axios.post(
-        'http://localhost:8080/api/reservaciones/hospedaje',
+        `${process.env.URL_BACKEND}/reservaciones/hospedaje`,
         {
           cliente: clienteId,
           fechaInicio: fechaInicioFormateada,
@@ -91,7 +89,7 @@ const BotonReserva = ({ fechasFormateadas, id }) => {
       setSuccessMessages([response.data.message]); 
   
     } catch (error) {
-      setErrorMessages(error?.response?.data)
+      setErrorMessages(error.response?.data)
       
     }
   

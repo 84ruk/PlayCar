@@ -3,16 +3,16 @@ import { useEffect, useState } from 'react';
 import ReservacionItem from './reservacion-item';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import { useAppContext } from '@/app/context/appContextProvider';
 import LoadingBox from '@/app/components/LoadingBox';
 
 const ReservacionesList = () => {
 
-    const { loading, setLoading, setErrorMessages, errorMessages, successMessages, setSuccessMessages } = useAppContext();
+    
 
     const { data: session } = useSession();
     const token = session?.user.jwt;
 
+  const [loading, setLoading] = useState(false);
   const [reservaciones, setReservaciones] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,10 +34,9 @@ const ReservacionesList = () => {
     if (token) {
         setLoading(true)
       const obtenerReservaciones = async () => {
-        setLoading(true)
         try {
           // Realizar la petición al backend para obtener las reservaciones
-          const { data } = await axios(`http://localhost:8080/api/reservaciones?page=${currentPage}`, {
+          const { data } = await axios(`${process.env.URL_BACKEND}/reservaciones?page=${currentPage}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -55,9 +54,10 @@ const ReservacionesList = () => {
   }, [currentPage, token]);
 
   const handleFilter = async (filter) => {
+    setLoading(true)
     setCurrentPage(1); // Reiniciar la página actual al aplicar un filtro
     try {
-      const { data } = await axios.get(`http://localhost:8080/api/reservaciones`, {
+      const { data } = await axios.get(`${process.env.URL_BACKEND}/reservaciones`, {
         params: {
           page: 1,
           filter, // Envía el filtro seleccionado al backend
@@ -70,15 +70,17 @@ const ReservacionesList = () => {
         setTotalPages(data.totalPages);
     
     } catch (error) {
-      console.error(error.response.data);
+      console.error(error);
     }
+    setLoading(false)
   };
 
 
   return (
     <>
-    {loading ? <LoadingBox /> /* AQUI IRA LOADING */ : null}
-    <div className="max-w-lg mx-auto">
+    {loading ? <LoadingBox /> : (
+      <>
+        <div className="max-w-lg mx-auto">
     <div className="space-x-2 md:space-x-4 mb-4">
       {/* Botones de filtro */}
       <button
@@ -114,7 +116,6 @@ const ReservacionesList = () => {
     </div>
   </div>
     <div>
-        {console.log(reservaciones)}
       {/* Renderizar la lista de reservaciones */}
       {reservaciones.map((reservacion) => (
         <ReservacionItem key={reservacion._id} reservacion={reservacion} />
@@ -128,6 +129,10 @@ const ReservacionesList = () => {
         Siguiente
       </button>
     </div>
+      
+      </>
+    )}
+    
     </>
     
   );

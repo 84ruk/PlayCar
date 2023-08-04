@@ -8,7 +8,7 @@ export default async  function LogoutButton() {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/logout', {}, { withCredentials: true });
+      const response = await axios.post(`${process.env.URL_BACKEND}/auth/logout`, {}, { withCredentials: true });
     } catch (error) {
       console.log(error);
       // Manejar el error de cierre de sesión

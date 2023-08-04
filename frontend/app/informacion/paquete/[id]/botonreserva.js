@@ -81,7 +81,7 @@ const BotonReserva = ({ fechasFormateadas, id, autoReservado, hospedajeReservado
       const fechaFinFormateada = fechaFin.toISOString().split('T')[0];
   
       const response = await axios.post(
-        'http://localhost:8080/api/reservaciones/paquete',
+        `${process.env.URL_BACKEND}/reservaciones/paquete`,
         {
           cliente: clienteId,
           fechaInicio: fechaInicioFormateada,

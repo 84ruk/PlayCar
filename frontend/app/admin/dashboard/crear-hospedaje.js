@@ -91,7 +91,6 @@ function CrearHospedaje() {
 
   return (
 <>
-  {loading ? <LoadingSpinner /> : null}
   <div className="max-w-lg mx-auto bg-white shadow p-6 rounded-lg mt-5">
     <h1 className="text-2xl font-bold mb-4">Crear Hospedaje</h1>
     {errorMessages?.length > 0 ? <Error messages={errorMessages} /> : null}

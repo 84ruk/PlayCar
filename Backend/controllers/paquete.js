@@ -58,9 +58,9 @@ const crearPaquete = async (req, res) => {
       hospedajesIds = hospedajesEncontrados.map(hospedaje => hospedaje._id);
     }
    // Subir los archivos a S3
-   const uploadedFiles = await Promise.all(
+   /* const uploadedFiles = await Promise.all(
     req.files.map((file) => uploadFile(file))
-  );
+  ); */
   // Obtener las URLs de las imágenes desde AWS S3
   
   // Crear el paquete y guardar en la base de datos
@@ -70,7 +70,6 @@ const crearPaquete = async (req, res) => {
     precio,
     autos: autosIds,
     hospedajes: hospedajesIds,
-    imagenes: uploadedFiles, // Asignar las URLs de las imágenes al campo "imagenes"
   });
   
  
@@ -280,14 +279,14 @@ const actualizarPaquete = async (req, res) => {
   };
   
 
-const borrarAuto = async( req, res = response ) => {
+const borrarPaquete = async( req, res = response ) => {
     const { id } = req.params;
 
     
     try {
-        const auto = await Auto.findByIdAndDelete( id );
+        const paquete = await Paquete.findByIdAndDelete( id ); 
         res.json({
-            auto
+          paquete
         });
     } catch (error) {
         console.log(error);
@@ -304,5 +303,6 @@ module.exports = {
     crearPaquete,
     obtenerPaquetes,
     actualizarPaquete,
-    obtenerPaquete
+    obtenerPaquete,
+    borrarPaquete
 }

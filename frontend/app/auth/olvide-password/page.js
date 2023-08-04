@@ -15,13 +15,12 @@ export default function ForgotPassword() {
 
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/usuarios/olvide-password',
+        `${process.env.URL_BACKEND}/usuarios/olvide-password`,
         { correo },
         { withCredentials: true }
       );
 
       if (response.data.msg) {
-        console.log('Success:', [response.data.msg]);
         setSuccessMessages([response.data.msg]); // Envolver el mensaje en un array
       } else {
         setErrorMessages([response.data.msg]);

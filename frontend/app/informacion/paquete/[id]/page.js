@@ -6,7 +6,7 @@ import Link from 'next/link';
 import BotonReserva from './botonreserva';
 
 async function getDetallePaquete(id){
-    const { data } = await axios.get(`http://localhost:8080/api/paquetes/${id}`); //cache nostore
+    const { data } = await axios.get(`${process.env.URL_BACKEND}/paquetes/${id}`); //cache nostore
     return data;
 }
 
@@ -32,7 +32,8 @@ export default async function DetallePaquete ({
             <Image
               src="/URL_OF_FALLBACK_IMAGE"
               alt="Fallback Image"
-              
+              width={500}
+              height={500}
             />
           ) : (
             paquete.imagenes.map((imagen, index) => (

@@ -9,7 +9,6 @@ const obtenerUsuario = async (req, res) => {
 
       // Verifica si el usuario autenticado es un administrador
       if (!usuarioAutenticado.isAdmin) {
-        console.log(usuarioAutenticado)
         return res.status(403).json({ 
           msg: "No estás autorizado para ver esta información",
         });/* res.status(403).json({ 
@@ -20,7 +19,6 @@ const obtenerUsuario = async (req, res) => {
       // Busca al usuario en la base de datos
       const usuario = await Usuario.find({ usuario: usuarioAutenticado });
       
-      console.log(usuario);
       // Devuelve los datos del usuario en la respuesta
       return res.json(usuario);
       

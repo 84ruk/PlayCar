@@ -113,7 +113,6 @@ const crearReservacionAuto = async (req, res = response) => {
       await fechaReservada.save();
       return fechaReservada; // Retornar el objeto completo en lugar del ID
     });
-    
     reservacion.fechasReservadas = await Promise.all(fechasReservadas);
 
     await Promise.all([

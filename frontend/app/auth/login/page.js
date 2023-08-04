@@ -31,7 +31,6 @@ const Login = () => {
         password,
         redirect: false,
       });
-  
       if (result.error) {
         let errorMessages = [];
         if (typeof result.error === 'string') {

@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default async function Hospedajes() {
 
-    const { data } = await axios.get('http://localhost:8080/api/hospedajes');
+    const { data } = await axios.get(`${process.env.URL_BACKEND}/hospedajes`);
     const hospedajes = data.hospedajes;
 
 

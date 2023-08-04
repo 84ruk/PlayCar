@@ -19,6 +19,7 @@ class Server {
             //auth: 'api/auth
             auth: '/api/auth',
             usuarios: '/api/usuarios',
+            productos: '/api/productos',
             usuario: '/api/usuario',
             autos: '/api/autos',
             hospedajes: '/api/hospedajes',
@@ -53,7 +54,7 @@ class Server {
 
         //Cors
         this.app.use(cors({
-          origin: 'http://localhost:3000', // Reemplaza con la URL de tu frontend
+          origin: `${process.env.URL_FRONTEND}`, // Reemplaza con la URL de tu frontend
           credentials: true, // Permite enviar y recibir cookies
         }));
         this.app.use(cookieParser());
@@ -75,7 +76,8 @@ class Server {
         this.app.use(this.paths.hospedajes, require('../routes/hospedajes'));
         this.app.use(this.paths.reservaciones, require('../routes/reservaciones'));
         this.app.use(this.paths.paquetes, require('../routes/paquetes'));
-        /* this.app.use(this.paths.productos, require('../routes/productos')); */
+        this.app.use(this.paths.productos, require('../routes/productos'));
+
 
       }
 

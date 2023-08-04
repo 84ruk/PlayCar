@@ -83,7 +83,6 @@ const cambiarEstadoOrden = async (req, res = response) => {
     
   const { ...resto } = req.body;
   const { id } = req.params;
-  console.log(id);
     try {
 
     // Buscar la orden por su ID y actualizar el estado

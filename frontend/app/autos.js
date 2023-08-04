@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default async function Autos() {
 
-    const { data } = await axios.get('http://localhost:8080/api/autos');
+    const { data } = await axios.get(`${process.env.URL_BACKEND}/autos`);
     const autos = data.autos;
 
     return (
