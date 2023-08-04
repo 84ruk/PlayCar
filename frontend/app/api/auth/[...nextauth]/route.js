@@ -12,7 +12,7 @@ const options = {
       },
       authorize: async (credentials) => {
         try {
-          const response = await fetch('http://localhost:8080/api/auth/login', {
+          const response = await fetch(`${process.env.URL_BACKEND}/auth/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -88,7 +88,7 @@ const options = {
     signout: async (req, res) => {
       try {
         // Llamada a la función "signout" para cerrar sesión en el backend
-        const response = await fetch('http://localhost:8080/api/auth/logout', {
+        const response = await fetch(`${process.env.URL_BACKEND}/auth/logout`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

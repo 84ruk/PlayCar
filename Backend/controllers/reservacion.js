@@ -34,7 +34,6 @@ const crearReservacionHospedaje = async (req, res = response) => {
       hospedajeReservado,
     });
 
-    console.log('===============================', hospedajeReservado)
     const rangosFechasReservadas = [{
       fechaInicio: new Date(fechaInicio),
       fechaFin: new Date(fechaFin),
@@ -114,7 +113,6 @@ const crearReservacionAuto = async (req, res = response) => {
       await fechaReservada.save();
       return fechaReservada; // Retornar el objeto completo en lugar del ID
     });
-    
     reservacion.fechasReservadas = await Promise.all(fechasReservadas);
 
     await Promise.all([
@@ -282,9 +280,25 @@ const crearReservacionPaquete = async (req, res) => {
 
 
 
-const obtenerReservaciones = async (req, res = response) => {
+/* const obtenerReservaciones = async (req, res = response) => {
   try {
-    const reservaciones = await Reservacion.find().populate('fechasReservadas');
+    const { page, startDate, endDate } = req.query;
+    const itemsPerPage = 10;
+    const currentPage = parseInt(page) || 1;
+
+    // Construye el objeto de consulta para filtrar las reservaciones por fechas
+    let query = {};
+    if (startDate && endDate) {
+      query = { fechaInicio: { $gte: new Date(startDate), $lte: new Date(endDate) } };
+    }
+
+    // Obtiene las reservaciones que coinciden con la consulta y la paginación
+    const totalReservaciones = await Reservacion.countDocuments(query);
+    const reservaciones = await Reservacion.find(query)
+      .sort({ fechaInicio: 1 }) // Ordena las reservaciones por fecha de inicio ascendente
+      .skip((currentPage - 1) * itemsPerPage)
+      .limit(itemsPerPage)
+      .populate('fechasReservadas');
 
     const reservacionesConFechas = reservaciones.map((reservacion) => {
       const fechasReservadas = reservacion.fechasReservadas.map((fechaReservada) => ({
@@ -305,13 +319,128 @@ const obtenerReservaciones = async (req, res = response) => {
       };
     });
 
-    res.json({ reservaciones: reservacionesConFechas });
+    // Calcula el número total de páginas
+    const totalPages = Math.ceil(totalReservaciones / itemsPerPage);
+
+    res.json({ reservaciones: reservacionesConFechas, totalPages });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Ocurrió un error al obtener las reservaciones' });
+  }
+}; */
+
+
+/* const obtenerReservaciones = async (req, res = response) => {
+  try {
+    const { page, startDate, endDate } = req.query;
+    const itemsPerPage = 10;
+    const currentPage = parseInt(page) || 1;
+
+    // Construye el objeto de consulta para filtrar las reservaciones por fechas
+    let query = {};
+    if (startDate && endDate) {
+      query = { fechaInicio: { $gte: new Date(startDate), $lte: new Date(endDate) } };
+    }
+
+    // Obtiene las reservaciones que coinciden con la consulta y la paginación
+    const totalReservaciones = await Reservacion.countDocuments(query);
+    const reservaciones = await Reservacion.find(query)
+      .sort({ fechaInicio: 1 }) // Ordena las reservaciones por fecha de inicio ascendente
+      .skip((currentPage - 1) * itemsPerPage)
+      .limit(itemsPerPage)
+      .populate('fechasReservadas');
+
+    const reservacionesConFechas = reservaciones.map((reservacion) => {
+      const fechasReservadas = reservacion.fechasReservadas.map((fechaReservada) => ({
+        fechaInicio: fechaReservada.fechaInicio,
+        fechaFin: fechaReservada.fechaFin,
+      }));
+
+      return {
+        _id: reservacion._id,
+        cliente: reservacion.cliente,
+        fechaInicio: reservacion.fechaInicio,
+        fechaFin: reservacion.fechaFin,
+        numeroPersonas: reservacion.numeroPersonas,
+        hospedajeReservado: reservacion.hospedajeReservado,
+        autoReservado: reservacion.autoReservado,
+        paqueteReservado: reservacion.paqueteReservado,
+        fechasReservadas: fechasReservadas,
+        __v: reservacion.__v,
+      };
+    });
+
+    // Calcula el número total de páginas
+    const totalPages = Math.ceil(totalReservaciones / itemsPerPage);
+
+    res.json({ reservaciones: reservacionesConFechas, totalPages });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Ocurrió un error al obtener las reservaciones' });
+  }
+}; */
+
+const obtenerReservaciones = async (req, res = response) => {
+  try {
+    const { page, startDate, endDate, filter } = req.query;
+    const itemsPerPage = 10;
+    const currentPage = parseInt(page) || 1;
+
+    // Construye el objeto de consulta para filtrar las reservaciones por fechas
+    let query = {};
+    if (startDate && endDate) {
+      query = { fechaInicio: { $gte: new Date(startDate), $lte: new Date(endDate) } };
+    }
+
+    // Aplicar filtros adicionales según la opción seleccionada
+    if (filter === 'hoy') {
+      const today = new Date();
+      query.fechaInicio = { $gte: today.setHours(0, 0, 0, 0) };
+    } else if (filter === 'autos') {
+      query.autoReservado = { $exists: true };
+    } else if (filter === 'hospedajes') {
+      query.hospedajeReservado = { $exists: true };
+    } else if (filter === 'paquetes') {
+      query.paqueteReservado = { $exists: true };
+    }
+
+    // Obtiene las reservaciones que coinciden con la consulta y la paginación
+    const totalReservaciones = await Reservacion.countDocuments(query);
+    const reservaciones = await Reservacion.find(query)
+      .sort({ fechaInicio: 1 }) // Ordena las reservaciones por fecha de inicio ascendente
+      .skip((currentPage - 1) * itemsPerPage)
+      .limit(itemsPerPage)
+      .populate('fechasReservadas');
+
+    const reservacionesConFechas = reservaciones.map((reservacion) => {
+      const fechasReservadas = reservacion.fechasReservadas.map((fechaReservada) => ({
+        fechaInicio: fechaReservada.fechaInicio,
+        fechaFin: fechaReservada.fechaFin,
+      }));
+
+      return {
+        _id: reservacion._id,
+        cliente: reservacion.cliente,
+        fechaInicio: reservacion.fechaInicio,
+        fechaFin: reservacion.fechaFin,
+        numeroPersonas: reservacion.numeroPersonas,
+        hospedajeReservado: reservacion.hospedajeReservado,
+        autoReservado: reservacion.autoReservado,
+        paqueteReservado: reservacion.paqueteReservado,
+        fechasReservadas: fechasReservadas,
+        __v: reservacion.__v,
+      };
+    });
+
+    // Calcula el número total de páginas
+    const totalPages = Math.ceil(totalReservaciones / itemsPerPage);
+
+    res.json({ reservaciones: reservacionesConFechas, totalPages });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Ocurrió un error al obtener las reservaciones' });
   }
 };
-
 
 const obtenerReservacion = async (req, res = response) => {
   try {

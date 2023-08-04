@@ -113,10 +113,8 @@ const usuariosPut = async (req, res = response) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log(error);
         return res.status(500).json({ msg: 'Error al enviar el correo electrónico' });
       } else {
-        console.log('Email sent: ' + info.response);
         res.json({ msg: 'Correo electrónico enviado correctamente' });
       }
     });

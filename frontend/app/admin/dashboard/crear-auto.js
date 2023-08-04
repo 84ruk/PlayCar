@@ -13,7 +13,7 @@ function CrearAuto() {
   const { loading, setLoading, setErrorMessages, errorMessages, successMessages, setSuccessMessages } = useAppContext();
   const { data: session } = useSession();
   const token = session?.user.jwt;
-  console.log(session);
+
   const initialValues = {
     nombre: '',
     marca: '',
@@ -60,7 +60,7 @@ function CrearAuto() {
       }
     
 
-      const response = await axios.post('http://localhost:8080/api/autos', formData, {
+      const response = await axios.post(`${process.env.URL_BACKEND}/autos`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -78,7 +78,6 @@ function CrearAuto() {
 
   return (
     <>
-      {loading ? <LoadingSpinner /> : null}
       <div className="max-w-lg mx-auto bg-white shadow p-6 rounded-lg mt-5">
         <h1 className="text-2xl font-bold mb-4">Crear Auto</h1>
         {errorMessages?.length > 0 ? <Error messages={errorMessages} /> : null}

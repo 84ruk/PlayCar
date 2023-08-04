@@ -15,7 +15,7 @@ function ConfirmacionCuentaPage() {
   useEffect(() => {
     const confirmarCuenta = async(token) => {
       try {
-        const url = `http://localhost:8080/api/usuarios/confirmar/${token}`
+        const url = `${process.env.URL_BACKEND}/usuarios/confirmar/${token}`
         const response = await axios.get(url);
         ///ahcer adlsajdasljkasd
       } catch (error) {

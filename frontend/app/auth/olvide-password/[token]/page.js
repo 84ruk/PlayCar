@@ -13,12 +13,11 @@ export default function OlvidePasswordPage() {
   
   const params = useParams();
   const { token } = params;
-    console.log(token)
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   
   const resetPassword = async () => {
-  const response = await axios.patch(`http://localhost:8080/api/usuarios/olvide-password/${token}`, { password });
+  const response = await axios.patch(`${process.env.URL_BACKEND}/usuarios/olvide-password/${token}`, { password });
   return response.data;
   };
   
@@ -38,7 +37,7 @@ export default function OlvidePasswordPage() {
   try {
     const response = await resetPassword();
     if (response.data.msg) {
-      console.log('Success:', [response.data.msg]);
+      
       setSuccessMessages([response.data.msg]); // Envolver el mensaje en un array
     } else {
       setErrorMessages([response.data.msg]);

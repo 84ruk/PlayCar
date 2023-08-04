@@ -1,20 +1,10 @@
 
-import useSWR from 'swr'
 import axios from 'axios';
-import { getAuth } from '../helpers/authApi';
 
 
 const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
-/*   const { data: user, error, mutate } = useSWR(
-    '/api/auth',
-    getAuth,
-    {
-      staleTime: 10000,
-    },
-    );
- */
-    
+
 
   
 
@@ -25,7 +15,7 @@ const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
 
     try {
-      const response = await axios.post('http://localhost:8080/api/usuarios', {
+      const response = await axios.post(`${process.env.URL_BACKEND}/usuarios`, {
               nombre, 
               correo, 
               password
@@ -43,7 +33,6 @@ const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
   
       } catch (error) {
         setSuccessMessages([])
-          /* console.log( error.response); */
         setErrorMessages([error.response.data.errors]); 
       }
     
@@ -52,27 +41,6 @@ const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     setLoading(false);
   };
 
-  const login = async ({ correo, password, setLoading, setErrorMessages}) => {
-    
-    setErrorMessages([]);
-    setLoading(true);
-    try {
-      const response = await axios.post('http://localhost:8080/api/auth/login', { correo, 
-      password }, {
-        withCredentials: true, 
-      }
-      
-      );
-      //PONER TOKEN EN COOKIES
-       mutate();  // Actualiza el estado del usuario
-
-      // ... Realizar cualquier acción adicional después de iniciar sesión correctamente ...
-    } catch (error) {
-      console.log(error.response); // Imprime el error en la consola para depuración
-      setErrorMessages(error.response.data);
-    }
-    setLoading(false);
-  };
 
 
   const forgotPassword = async ({ correo, setErrors, setStatus }) => {
@@ -111,32 +79,9 @@ const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     }
   };
 
-  const logout = async () => {
-    try {
-      await axios.post('/logout');
-
-       mutate();  // Actualiza el estado del usuario
-
-      /* router.push('/login');  */// Redirige a la página de inicio de sesión
-
-      // ... Realizar cualquier acción adicional después de cerrar sesión correctamente ...
-
-    } catch (error) {
-      console.log(error); // Imprime el error en la consola para depuración
-    }
-  };
-/*   useEffect(() => {
-    if (middleware === 'guest' && redirectIfAuthenticated && user) {
-      router.push(redirectIfAuthenticated);
-    }
-    if (middleware === 'auth' && error) {
-      router.push('/auth/login');
-    }
-  }, [user, error]); */
 
   return {
     register,
-    login,
     forgotPassword,
     resetPassword,
     logout,

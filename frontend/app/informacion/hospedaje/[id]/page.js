@@ -5,7 +5,7 @@ import Image from 'next/image';
 import BotonReserva from './botonreserva';
 
 async function getDetalleHospedaje(id){
-    const { data } = await axios.get(`http://localhost:8080/api/hospedajes/${id}`); //cache nostore
+    const { data } = await axios.get(`${process.env.URL_BACKEND}/hospedajes/${id}`); //cache nostore
     const response = data;
   return response;
 }

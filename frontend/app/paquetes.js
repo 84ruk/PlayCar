@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Paquetes() {
-  const { data } = await axios.get('http://localhost:8080/api/paquetes');
+  const { data } = await axios.get(`${process.env.URL_BACKEND}/paquetes`);
   const paquetes = data.paquetes;
 
   const getDescripcionConInclusion = (paquete) => {

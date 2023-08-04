@@ -11,20 +11,11 @@ const crearAuto = async( req, res = response ) => {
     
 
     try {
-/*         const existeAuto = await Auto.findOne({ nombre }); 
-        
-        if (existeAuto) {
-          return res.status(400).json({
-            msg: "El auto ya existe",
-          });
-        }
-        NO SE SI VAYAN A HABER AUTOS DUPLICADOS
-        */
 
         
-      const uploadedFiles = await Promise.all(
+     /*  const uploadedFiles = await Promise.all(
         req.files.map((file) => uploadFile(file))
-      );
+      ); */
 
         
         const auto = new Auto({ 
@@ -35,7 +26,7 @@ const crearAuto = async( req, res = response ) => {
             categoria,
             precio,
             estado,
-            imagenes: uploadedFiles 
+            /* imagenes: uploadedFiles  */
         });
 
 
@@ -72,7 +63,6 @@ const obtenerAutos = async( req, res = response ) => {
 
 const obtenerAuto = async( req, res = response ) => {
 
-  console.log('hola')
     const { id } = req.params;
     
     try {

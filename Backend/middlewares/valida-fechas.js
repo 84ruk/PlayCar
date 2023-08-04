@@ -15,6 +15,7 @@ const validarFechasMiddleware = async (req, res, next) => {
     }
 
     const hospedaje = await Hospedaje.findById(hospedajeReservado);
+
     if (!hospedaje) {
       return res.status(404).json({ message: 'El hospedaje no existe' });
     }

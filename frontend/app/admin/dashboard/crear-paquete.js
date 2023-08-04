@@ -37,7 +37,7 @@ function CrearPaquete() {
     setSuccessMessages([])
     const obtenerAutos = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/autos');
+        const response = await axios.get(`${process.env.URL_BACKEND}/autos`);
         setAutos(response.data.autos);
       } catch (error) {
         setErrorMessages(error.response);
@@ -46,7 +46,7 @@ function CrearPaquete() {
 
     const obtenerHospedajes = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/hospedajes');
+        const response = await axios.get(`${process.env.URL_BACKEND}/hospedajes`);
         setHospedajes(response.data.hospedajes);
       } catch (error) {
         
@@ -80,7 +80,7 @@ function CrearPaquete() {
       }
     
 
-      const response = await axios.post('http://localhost:8080/api/paquetes', formData, {
+      const response = await axios.post(`${process.env.URL_BACKEND}/paquetes`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -97,7 +97,6 @@ function CrearPaquete() {
 
   return (
     <>
-      {loading ? <LoadingSpinner /> : null}
       <div className="max-w-lg mx-auto bg-white shadow p-6 rounded-lg mt-5">
         <h1 className="text-2xl font-bold mb-4">Crear Paquete</h1>
         {errorMessages?.length > 0 ? <Error messages={errorMessages} /> : null}

@@ -16,7 +16,6 @@ function ConfirmacionCuentaPage() {
 
         const url = `${process.env.URL_BACKEND}/api/usuarios/confirmar/${id}`
         const { data } = await axios(url);
-        console.log(data);
 
       } catch (error) {
         console.log(error);

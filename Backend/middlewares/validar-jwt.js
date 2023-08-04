@@ -6,7 +6,8 @@ const Usuario = require("../models/usuario");
 
 const validarJWT = async (req, res = response, next) => {
 
-  const token = req.headers.authorization; // Leer el token de la cookie['auth-token']; // Leer el token de la cookie
+  const token = req.headers.authorization; // Leer el token de la cookie['auth-token']; // Leer el token de la cookie\
+  
   if (!token) {
     return res.status(401).json({
       ok: false,

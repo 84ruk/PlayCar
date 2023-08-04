@@ -3,14 +3,15 @@ import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import FileInput from './fileinput';
-import { useSession } from 'next-auth/react';
 import { useAppContext } from '@/app/context/appContextProvider';
 import Error from '@/app/components/Error';
 import LoadingSpinner from '@/app/components/Loader';
 import Success from '@/app/components/Success';
+import { useSession } from 'next-auth/react';
 
 function CrearHospedaje() {
   const { loading, setLoading, setErrorMessages, errorMessages, successMessages, setSuccessMessages } = useAppContext();
+
   const { data: session } = useSession();
   const token = session?.user.jwt;
   
@@ -71,7 +72,7 @@ function CrearHospedaje() {
       }
     
 
-      const response = await axios.post('http://localhost:8080/api/hospedajes', formData, {
+      const response = await axios.post(`${process.env.URL_BACKEND}/hospedajes`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -90,7 +91,6 @@ function CrearHospedaje() {
 
   return (
 <>
-  {loading ? <LoadingSpinner /> : null}
   <div className="max-w-lg mx-auto bg-white shadow p-6 rounded-lg mt-5">
     <h1 className="text-2xl font-bold mb-4">Crear Hospedaje</h1>
     {errorMessages?.length > 0 ? <Error messages={errorMessages} /> : null}

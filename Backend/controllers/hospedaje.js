@@ -2,7 +2,6 @@ const { response } = require("express");
 const Hospedaje = require("../models/hospedaje"); 
 const FechaReservada = require("../models/fecha-reservada");
 const Paquete = require("../models/paquete");
-const { uploadFile } = require("../s3");
 
 const crearHospedaje = async( req, res = response ) => {
 
@@ -16,9 +15,9 @@ const crearHospedaje = async( req, res = response ) => {
         return res.status(400).json({ message: 'Hospedaje ya existe'});
       }
 
-      const uploadedFiles = await Promise.all(
+      /* const uploadedFiles = await Promise.all(
         req.files.map((file) => uploadFile(file))
-      );
+      ); */
 
         const hospedaje = new Hospedaje({ 
           nombre,
@@ -29,7 +28,7 @@ const crearHospedaje = async( req, res = response ) => {
           descripcion,
           precio,
           estado, 
-          imagenes: uploadedFiles
+          
          });
 
 

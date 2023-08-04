@@ -13,7 +13,6 @@ const BotonReserva = ({ fechasFormateadas, id }) => {
 
   const { data: session, status } = useSession();
   const { loading, setLoading, setErrorMessages, errorMessages, setSuccessMessages, successMessages} = useAppContext();
-  console.log(fechasFormateadas)
   const clienteId = session?.user?.uid 
   const token = session?.user.jwt;
 
@@ -32,9 +31,15 @@ const BotonReserva = ({ fechasFormateadas, id }) => {
     return fechasFormateadas.some((rango) => {
       const fechaInicio = new Date(rango.fechaInicio);
       const fechaFin = new Date(rango.fechaFin);
-      return isWithinInterval(new Date(date), { start: fechaInicio, end: fechaFin });
+  
+  
+      const fechaFinDespues = new Date(fechaFin);
+      fechaFinDespues.setDate(fechaFinDespues.getDate() + 1);
+  
+      return isWithinInterval(new Date(date), { start: fechaInicio, end: fechaFinDespues });
     });
   };
+
 
   const isDayDisabled = (date) => {
     const today = new Date();
@@ -55,14 +60,12 @@ const BotonReserva = ({ fechasFormateadas, id }) => {
 
     e.preventDefault();
     if (!fechaInicio || !fechaFin) {
-      setError(true);
-      console.log('Por favor selecciona un rango de fechas válido.');
+      setErrorMessages(['Por favor selecciona un rango de fechas válido.']);
       return;
     }
   
     if (new Date(fechaFin) < new Date(fechaInicio)) {
-      setError(true);
-      console.log('La fecha de fin no puede ser anterior a la fecha de inicio.');
+      setErrorMessages(['La fecha de fin no puede ser anterior a la fecha de inicio.']);
       return;
     }
   
@@ -73,12 +76,12 @@ const BotonReserva = ({ fechasFormateadas, id }) => {
       const fechaFinFormateada = fechaFin.toISOString().split('T')[0];
   
       const response = await axios.post(
-        'http://localhost:8080/api/reservaciones/hospedaje',
+        `${process.env.URL_BACKEND}/reservaciones/auto`,
         {
           cliente: clienteId,
           fechaInicio: fechaInicioFormateada,
           fechaFin: fechaFinFormateada,
-          hospedajeReservado: id,
+          autoReservado: id,
         },
         {
           headers: {
@@ -88,11 +91,12 @@ const BotonReserva = ({ fechasFormateadas, id }) => {
         }
       );
       
-  
+       
       setSuccessMessages([response.data.message]); 
   
     } catch (error) {
-      setErrorMessages(error?.response?.data)
+      
+      setErrorMessages(error.response?.data)
       
     }
   
