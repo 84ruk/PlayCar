@@ -17,7 +17,9 @@ export default async function Hospedajes() {
             <h2 className="text-3xl font-bold mb-5">Hospedajes Disponibles</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {hospedajes?.map((hospedaje) => (
-                    <div className="bg-white rounded-lg shadow-md p-6 flex flex-col justify-between transition-all duration-300 transform hover:scale-105">
+                    <div 
+                    key={hospedaje._id}
+                    className="bg-white rounded-lg shadow-md p-6 flex flex-col justify-between transition-all duration-300 transform hover:scale-105">
                     {/* Imagen del hospedaje */}
                     <div className="mx-auto mb-4">
                     {hospedaje.imagenes.length > 0 ? (

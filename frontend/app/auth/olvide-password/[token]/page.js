@@ -22,9 +22,10 @@ export default function OlvidePasswordPage() {
   };
   
   useEffect(() => {
-  setErrorMessages([]);
-  setSuccessMessages([]);
-  }, []);
+    setErrorMessages([]);
+    setSuccessMessages([]);
+  }, [setErrorMessages, setSuccessMessages]);
+  
   
   const handleSubmit = async(e) => {
   e.preventDefault();

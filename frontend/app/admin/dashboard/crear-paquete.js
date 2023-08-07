@@ -32,6 +32,8 @@ function CrearPaquete() {
   const [hospedajes, setHospedajes] = useState([]);
   const [images, setImages] = useState([]);
 
+
+  
   useEffect(() => {
     setErrorMessages([])
     setSuccessMessages([])

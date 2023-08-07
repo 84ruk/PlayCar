@@ -38,7 +38,8 @@ function CrearHospedaje() {
   useEffect(() => {
     setErrorMessages([]);
     setSuccessMessages([]);
-  }, []);
+  }, [setErrorMessages, setSuccessMessages]);
+  
 
   const handleFileInputChange = (files) => {
     const fileList = Array.from(files); // Convertir el FileList a un array de Files

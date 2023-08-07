@@ -53,9 +53,10 @@ const Register = () => {
   };
 
   useEffect(() => {
-    setSuccessMessages([]);
     setErrorMessages([]);
-  }, []);
+    setSuccessMessages([]);
+  }, [setErrorMessages, setSuccessMessages]);
+  
   
   return (
     <>
