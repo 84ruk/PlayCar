@@ -84,7 +84,6 @@ const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     register,
     forgotPassword,
     resetPassword,
-    logout,
   };
 };
 
