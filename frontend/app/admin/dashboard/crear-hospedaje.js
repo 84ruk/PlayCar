@@ -82,7 +82,6 @@ function CrearHospedaje() {
 
       setSuccessMessages([response.data.message]);  
     } catch (error) {
-      console.log(error.response.data)
       setErrorMessages([error.response.data.errors]); 
     }
 

@@ -91,7 +91,6 @@ const BotonReserva = ({ fechasFormateadas, id }) => {
         }
         
       );
-       console.log(response)
       setSuccessMessages([response.data.message]); 
   
     } catch (error) {

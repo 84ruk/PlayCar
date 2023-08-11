@@ -70,7 +70,6 @@ function CrearAuto() {
        setSuccessMessages([response.data.message]); 
     } catch (error) {
       setErrorMessages([error.response.data.errors]); 
-        console.log(error.response.data);
     }
 
     setLoading(false);
