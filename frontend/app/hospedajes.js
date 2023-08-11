@@ -21,12 +21,8 @@ export default async function Hospedajes() {
                     key={hospedaje._id}
                     className="bg-white rounded-lg shadow-md p-6 flex flex-col justify-between transition-all duration-300 transform hover:scale-105">
                     {/* Imagen del hospedaje */}
-                    <div className="mx-auto mb-4">
-                    {hospedaje.imagenes.length > 0 ? (
-                        <Image src={hospedaje.imagenes[0]} alt={hospedaje.nombre} width={400} height={300} className="w-full h-auto rounded-lg shadow-md" />
-                    ) : (
+                    <div className="mb-4">
                         <div className="w-full h-40 bg-gray-300 rounded-lg shadow-md"></div>
-                    )}
                     </div>
 
                     {/* Detalles del hospedaje */}

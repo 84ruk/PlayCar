@@ -82,7 +82,6 @@ const crearReservacionAuto = async (req, res = response) => {
       autoReservado,
     } = req.body;
 
-
     const existeCliente = await usuario.findById(cliente);
 
     if(!existeCliente){

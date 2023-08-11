@@ -55,10 +55,10 @@ const BotonReserva = ({ fechasFormateadas, id }) => {
 
 
   const handleReservar = async (e) => {
+    e.preventDefault();
     setErrorMessages([])
     setSuccessMessages([])
 
-    e.preventDefault();
     if (!fechaInicio || !fechaFin) {
       setErrorMessages(['Por favor selecciona un rango de fechas válido.']);
       return;
@@ -89,9 +89,9 @@ const BotonReserva = ({ fechasFormateadas, id }) => {
             'Content-Type': 'application/json', // Cambiar a 'application/json' si el backend espera este formato
           },
         }
+        
       );
-      
-       
+       console.log(response)
       setSuccessMessages([response.data.message]); 
   
     } catch (error) {

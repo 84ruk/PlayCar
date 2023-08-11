@@ -26,14 +26,9 @@ export default async function Paquetes() {
             key={paquete._id}
             className="bg-white rounded-lg shadow-md p-6 flex flex-col justify-between transition-all duration-300 transform hover:scale-105"
           >
-            <div className="mx-auto mb-4">
-              {paquete.imagenes.length > 0 ? (
-                <Image src={paquete.imagenes[0]} alt="Imagen del paquete" width={300} height={200} className="rounded-lg w-auto h-auto" />
-
-              ) : (
-                null
-              )}
-            </div>
+                <div className="mb-4">
+                    <div className="w-full h-40 bg-gray-300 rounded-lg shadow-md"></div>
+                </div>
             <h3 className="text-lg font-bold mb-2">{paquete.nombre}</h3>
             <p className="text-gray-600 mb-4">{getDescripcionConInclusion(paquete)}</p>
             <p className="text-gray-800 font-bold">${paquete.precio}</p>

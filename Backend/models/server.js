@@ -51,10 +51,9 @@ class Server {
 
       
     middlewares(){
-
         //Cors
         this.app.use(cors({
-          origin: `${process.env.URL_FRONTEND}`, // Reemplaza con la URL de tu frontend
+          origin: `${process.env.FRONTEND_URL}`, // Reemplaza con la URL de tu frontend
           credentials: true, // Permite enviar y recibir cookies
         }));
         this.app.use(cookieParser());

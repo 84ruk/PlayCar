@@ -19,12 +19,8 @@ export default async function Autos() {
                     key={auto._id}
                     className="bg-white rounded-lg shadow-md p-6 flex flex-col justify-between transition-all duration-300 transform hover:scale-105"
                 >
-                    <div className="mx-auto mb-4">
-                    {auto.imagenes.length > 0 ? (
-                        <Image src={auto.imagenes[0]} alt="Imagen del auto" width={300} height={200} className="rounded-lg w-auto h-auto" />
-                    ) : (
-                        null
-                    )}
+                    <div className="mb-4">
+                        <div className="w-full h-40 bg-gray-300 rounded-lg shadow-md"></div>
                     </div>
                     <h3 className="text-lg font-bold mb-2">{auto.nombre}</h3>
                     <p className="text-gray-600 mb-2">{auto.marca} {auto.modelo}</p>
