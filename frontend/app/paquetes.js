@@ -1,10 +1,13 @@
-import axios from "axios";
-import Image from "next/image";
 import Link from "next/link";
 
 export default async function Paquetes() {
-  const { data } = await axios.get(`${process.env.URL_BACKEND}/paquetes`);
+  const response = await fetch(`${process.env.URL_BACKEND}/paquetes`, { next: { revalidate: 3600 } });
+  const data = await response.json();
   const paquetes = data.paquetes;
+
+
+  
+
 
   const getDescripcionConInclusion = (paquete) => {
     let descripcion = paquete.descripcion;
@@ -18,7 +21,7 @@ export default async function Paquetes() {
   };
 
   return (
-    <div className="container mx-auto mt-20">
+    <div className="container mx-auto mt-20" name="reservaciones">
       <h2 className="text-3xl font-bold mb-5">Paquetes Disponibles</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {paquetes?.map((paquete) => (

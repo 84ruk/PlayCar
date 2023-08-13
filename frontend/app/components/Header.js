@@ -38,23 +38,11 @@ const Header = () => {
           <Link href="/">
             <span className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/')}`}>Inicio</span>
           </Link>
-          <Link href="/catalogo">
-            <span className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/catalogo')}`}>Catálogo</span>
-          </Link>
-          <Link href="/contacto">
-            <span className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/contacto')}`}>Contacto</span>
-          </Link>
+            <span className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 hover:cursor-pointer ${isLinkSelected('/catalogo')}`}>Catálogo</span>
+            <span className={`cursor-pointer font-medium text-gray-600 hover:text-orange-500 hover:cursor-pointer ${isLinkSelected('/contacto')}`}>Contacto</span>
 
           {session?.user ? (
             <>
-              <Link href="/profile">
-              <span className="cursor-pointer">
-                <Image src={Profile} alt="profile" width={35} height={35} className="rounded-full" />
-              </span>
-              </Link>
-              <Link href={'/shopping-cart'} className='hover:text-orange-500 hover:pointer'>
-                  <Image src={CartSVG} alt="carrito" width={30} height={30} />
-                </Link>
                 <button className='cursor-pointer font-medium text-gray-600 hover:text-orange-500' onClick={() => signOut()}>
                 Cerrar Sesion
               </button>
@@ -105,26 +93,14 @@ const Header = () => {
                 Inicio
               </span>
             </Link>
-            <Link href="/catalogo" title="Ir a la seccion de Catalogo">
-              <span className={`block font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/catalogo')}`} onClick={toggleMenu}>
+              <span className={`block font-medium text-gray-600 hover:text-orange-500 hover:cursor-pointer ${isLinkSelected('/catalogo')}`} onClick={toggleMenu}>
                 Catálogo
               </span>
-            </Link>
-            <Link href="/contacto" title="Ir a la seccion de Catalogo">
-              <span className={`block font-medium text-gray-600 hover:text-orange-500 ${isLinkSelected('/contacto')}`} onClick={toggleMenu}>
+              <span className={`block font-medium text-gray-600 hover:text-orange-500 hover:cursor-pointer ${isLinkSelected('/contacto')}`} onClick={toggleMenu}>
                 Contacto
               </span>
-            </Link>
             {session?.user ? (
             <>
-              <Link href="/profile" >
-              <span className="cursor-pointer">
-                <Image src={Profile} width={35} height={35} className="rounded-full" alt="Foto de Pefil"/>
-              </span>
-              </Link>
-              <Link href={'/shopping-cart'} className='hover:text-orange-500 hover:pointer' title="Ir al carrito de compras">
-                  <Image src={CartSVG} alt="carrito" width={30} height={30} />
-              </Link>
               <span className='cursor-pointer font-medium text-gray-600 hover:text-orange-500'>
               <button onClick={() => signOut()}>
 

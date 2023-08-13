@@ -5,8 +5,11 @@ import Link from "next/link";
 
 export default async function Autos() {
 
-    const { data } = await axios.get(`${process.env.URL_BACKEND}/autos`);
+    const response = await fetch(`${process.env.URL_BACKEND}/autos`, { next: { revalidate: 3600 } });
+    const data = await response.json();
     const autos = data.autos;
+  
+    
 
     return (
         <>

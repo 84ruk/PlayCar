@@ -6,9 +6,11 @@ import Link from "next/link";
 
 export default async function Hospedajes() {
 
-    const { data } = await axios.get(`${process.env.URL_BACKEND}/hospedajes`);
+    const response = await fetch(`${process.env.URL_BACKEND}/hospedajes`, { next: { revalidate: 3600 } });
+    const data = await response.json();
     const hospedajes = data.hospedajes;
-
+  
+  
 
     return (
         <>

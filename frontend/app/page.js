@@ -15,7 +15,6 @@ import Hospedajes from './hospedajes';
 export default async function Home() {
 
 
-
   return( 
     <>
       
@@ -27,22 +26,21 @@ export default async function Home() {
           <div className="flex flex-col justify-between space-y-10  md:justify-between md:flex-row md:space-y-0 ">
             {/* Wrap the buttons on smaller screens */}
             <div className="flex justify-center w-auto space-x-4">
-                <Link
-                  href="/renta-hospedajes"
-                  className="px-2 py-2 rounded-md bg-orange-500 text-white font-bold shadow-md hover:bg-orange-400 transition-colors duration-300 hover:shadow-none flex items-center "
+                <span
+                  className="px-2 py-2 rounded-md bg-orange-500 text-white font-bold shadow-md hover:bg-orange-400 transition-colors duration-300 hover:shadow-none flex items-center hover:cursor-pointer"
+
                 >
                   <span>Hacer una reservación</span>
-                </Link>
+                </span>
 
-                <Link
-                  href="/contacto"
-                  className="px-2 py-2 rounded-md bg-white text-black font-bold text-lg shadow-md hover:shadow-lg transition-shadow flex items-center justify-center space-x-2"
+                <span
+                  className="px-2 py-2 rounded-md bg-white text-black font-bold text-lg shadow-md hover:shadow-lg transition-shadow flex items-center justify-center space-x-2 hover:cursor-pointer"
                 >
                   <span>
                     Renta hospedaje o paquetes turísticos
                   </span>
                   <Image src={Flecha} alt="Flecha" className="w-5 h-5" />
-                </Link>
+                </span>
             </div>
 
 
