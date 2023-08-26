@@ -29,7 +29,7 @@ export async function middleware(req) {
   }
 
   // Verifica si el usuario intenta acceder a rutas restringidas sin el rol adecuado
-  if (requestedPage.startsWith('/admin/') && session && session.user.rol !== 'ADMIN_ROLE') {
+  if (requestedPage.startsWith('/admin/') && session.user.rol !== 'ADMIN_ROLE') {
     // Redirige al usuario a la página principal
     const url = req.nextUrl.clone();
     url.pathname = '/';
